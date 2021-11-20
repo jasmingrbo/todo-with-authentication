@@ -58,6 +58,9 @@ dependencies {
     implementation di.hilt
     kapt di.hiltCompiler
 
+    implementation routing.navigation
+    implementation routing.hilt
+
     implementation compose.ui
     implementation compose.material
     implementation compose.uiToolingPreview

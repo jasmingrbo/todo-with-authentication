@@ -1,15 +1,16 @@
 ext {
     version = [
-            kotlin    : "1.5.31",
-            gradle    : "7.0.3",
-            ktx       : "1.7.0",
-            appCompat : "1.4.0",
-            material  : "1.4.0",
-            lifecycle : "2.4.0",
-            activity  : "1.4.0",
-            compose   : "1.0.5",
-            hilt      : "2.38.1",
-            navigation: "2.3.5"
+            kotlin        : "1.5.31",
+            gradle        : "7.0.3",
+            ktx           : "1.7.0",
+            appCompat     : "1.4.0",
+            material      : "1.4.0",
+            lifecycle     : "2.4.0",
+            activity      : "1.4.0",
+            compose       : "1.0.5",
+            hilt          : "2.38.1",
+            navigation    : "2.4.0-beta02",
+            hiltNavigation: "1.0.0-beta01"
     ]
 
     conf = [
@@ -49,7 +50,7 @@ ext {
     ]
 
     routing = [
-            jetpackNavigation: "androidx.navigation:navigation-fragment-ktx:$version.navigation",
-            ktx              : "androidx.navigation:navigation-ui-ktx:$version.navigation",
+            navigation: "androidx.navigation:navigation-compose:$version.navigation",
+            hilt      : "androidx.hilt:hilt-navigation-compose:$version.hiltNavigation",
     ]
 }

@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Practical">
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".presentation.PracticalActivity"
             android:exported="true"
             android:label="@string/app_name"

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Practical</string>
+    <string name="login">Login</string>
+    <string name="email_input_placeholder">Email</string>
+    <string name="password_input_placeholder">Password</string>
+    <string name="password_trailing_icon_description">An eye</string>
+    <string name="alternative_login_text">Or, login with…</string>
+    <string name="google_image_description">Google logo</string>
+    <string name="facebook_image_description">Facebook logo</string>
+    <string name="sign_up_text_first_part">Don\'t have an account?</string>
+    <string name="sign_up_text_second_part">Sign up</string>
 </resources>

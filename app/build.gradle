@@ -1,0 +1,66 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "kotlin-kapt"
+    id "dagger.hilt.android.plugin"
+}
+
+android {
+    compileSdk(conf.compileSdk)
+
+    defaultConfig {
+        applicationId(conf.applicationId)
+        minSdk(conf.minSdk)
+        targetSdk(conf.targedSdk)
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility(conf.javaCompileCompatibility)
+        targetCompatibility(conf.javaCompileCompatibility)
+    }
+
+    kotlinOptions {
+        jvmTarget = conf.jvmTarget
+        useIR = true
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = conf.compose
+    }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+
+dependencies {
+    implementation androidLib.ktx
+    implementation androidLib.appCompat
+    implementation androidLib.material
+    implementation androidLib.lifecycle
+    implementation androidLib.activity
+
+    implementation di.hilt
+    kapt di.hiltCompiler
+
+    implementation compose.ui
+    implementation compose.material
+    implementation compose.uiToolingPreview
+
+    debugImplementation compose.uiTooling
+}

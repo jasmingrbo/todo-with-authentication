@@ -1,0 +1,55 @@
+ext {
+    version = [
+            kotlin    : "1.5.31",
+            gradle    : "7.0.3",
+            ktx       : "1.7.0",
+            appCompat : "1.4.0",
+            material  : "1.4.0",
+            lifecycle : "2.4.0",
+            activity  : "1.4.0",
+            compose   : "1.0.5",
+            hilt      : "2.38.1",
+            navigation: "2.3.5"
+    ]
+
+    conf = [
+            compileSdk              : 31,
+            targetSdk               : 31,
+            minSdk                  : 23,
+            jvmTarget               : "1.8",
+            javaCompileCompatibility: JavaVersion.VERSION_1_8,
+            applicationId           : "ba.grbo.practical",
+            compose                 : "$version.compose"
+    ]
+
+    pluginDep = [
+            gradle: "com.android.tools.build:gradle:$version.gradle",
+            kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$version.kotlin",
+            hilt  : "com.google.dagger:hilt-android-gradle-plugin:$version.hilt",
+    ]
+
+    androidLib = [
+            ktx      : "androidx.core:core-ktx:$version.ktx",
+            appCompat: "androidx.appcompat:appcompat:$version.appCompat",
+            material : "com.google.android.material:material:$version.material",
+            lifecycle: "androidx.lifecycle:lifecycle-runtime-ktx:$version.lifecycle",
+            activity : "androidx.activity:activity-compose:$version.activity"
+    ]
+
+    compose = [
+            ui              : "androidx.compose.ui:ui:$version.compose",
+            material        : "androidx.compose.material:material:$version.compose",
+            uiToolingPreview: "androidx.compose.ui:ui-tooling-preview:$version.compose",
+            uiTooling       : "androidx.compose.ui:ui-tooling:$version.compose"
+    ]
+
+    di = [
+            hilt        : "com.google.dagger:hilt-android:$version.hilt",
+            hiltCompiler: "com.google.dagger:hilt-android-compiler:$version.hilt"
+    ]
+
+    routing = [
+            jetpackNavigation: "androidx.navigation:navigation-fragment-ktx:$version.navigation",
+            ktx              : "androidx.navigation:navigation-ui-ktx:$version.navigation",
+    ]
+}

@@ -11,6 +11,8 @@ import ba.grbo.practical.framework.data.state.LoginEvent.GoogleLoginButtonClicke
 import ba.grbo.practical.framework.data.state.LoginEvent.LoginButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordVisibilityButtonClicked
+import ba.grbo.practical.framework.data.state.LoginEvent.ResetEmailButtonClicked
+import ba.grbo.practical.framework.data.state.LoginEvent.ResetPasswordButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.SignUpTextClicked
 import ba.grbo.practical.framework.data.state.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,11 +27,17 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         is EmailChanged -> {
             state = state.copy(email = event.email)
         }
+        is ResetEmailButtonClicked -> {
+            state = state.copy(email = "")
+        }
         is PasswordChanged -> {
             state = state.copy(password = event.password)
         }
         is PasswordVisibilityButtonClicked -> {
             state = state.copy(passwordMasked = !state.passwordMasked)
+        }
+        is ResetPasswordButtonClicked -> {
+            state = state.copy(password = "")
         }
         is LoginButtonClicked -> { /*TODO*/
         }

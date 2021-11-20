@@ -48,6 +48,10 @@ android {
     }
 }
 
+kotlin.sourceSets.all {
+    languageSettings.optIn("kotlin.RequiresOptIn")
+}
+
 dependencies {
     implementation androidLib.ktx
     implementation androidLib.appCompat

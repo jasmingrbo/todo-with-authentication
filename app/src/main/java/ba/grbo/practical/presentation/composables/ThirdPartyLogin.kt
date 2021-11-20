@@ -33,7 +33,7 @@ fun ThirdPartyLogin(
             fontSize = 14.sp
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),

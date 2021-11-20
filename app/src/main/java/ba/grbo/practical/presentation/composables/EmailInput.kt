@@ -18,7 +18,8 @@ import ba.grbo.practical.framework.theme.PracticalTheme
 fun EmailInput(
     modifier: Modifier = Modifier,
     email: String,
-    onEmailChange: (String) -> Unit
+    onEmailChange: (String) -> Unit,
+    onResetEmailButtonClicked: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     Input(
@@ -31,7 +32,12 @@ fun EmailInput(
         ),
         keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
         onValueChange = onEmailChange
-    )
+    ) {
+        ResetButton(
+            visible = email.isNotEmpty(),
+            onClick = onResetEmailButtonClicked
+        )
+    }
 }
 
 @Preview(
@@ -46,7 +52,11 @@ fun EmailInput(
 @Composable
 fun EmailInputNonEmptyPreview() {
     PracticalTheme {
-        EmailInput(email = "grbo.dev@gmail.com", onEmailChange = {})
+        EmailInput(
+            email = "grbo.dev@gmail.com",
+            onEmailChange = {},
+            onResetEmailButtonClicked = {}
+        )
     }
 }
 
@@ -63,7 +73,11 @@ fun EmailInputNonEmptyPreview() {
 fun EmailInputEmptyPreview() {
     PracticalTheme {
         Surface {
-            EmailInput(email = "", onEmailChange = {})
+            EmailInput(
+                email = "",
+                onEmailChange = {},
+                onResetEmailButtonClicked = {}
+            )
         }
     }
 }

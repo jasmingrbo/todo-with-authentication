@@ -18,6 +18,8 @@ import ba.grbo.practical.framework.data.state.LoginEvent.GoogleLoginButtonClicke
 import ba.grbo.practical.framework.data.state.LoginEvent.LoginButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordVisibilityButtonClicked
+import ba.grbo.practical.framework.data.state.LoginEvent.ResetEmailButtonClicked
+import ba.grbo.practical.framework.data.state.LoginEvent.ResetPasswordButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.SignUpTextClicked
 import ba.grbo.practical.framework.data.state.Screen
 import ba.grbo.practical.presentation.login.Login
@@ -45,10 +47,12 @@ fun PracticalNavHost(
                 passwordMasked = viewModel.state.passwordMasked,
                 feedback = viewModel.state.feedback,
                 onEmailChange = { email -> viewModel.onEvent(EmailChanged(email)) },
+                onResetEmailButtonClicked = { viewModel.onEvent(ResetEmailButtonClicked) },
                 onPasswordChange = { pw -> viewModel.onEvent(PasswordChanged(pw)) },
                 onPasswordVisibilityButtonClicked = {
                     viewModel.onEvent(PasswordVisibilityButtonClicked)
                 },
+                onResetPasswordButtonClicked = { viewModel.onEvent(ResetPasswordButtonClicked) },
                 onLoginButtonClicked = { viewModel.onEvent(LoginButtonClicked) },
                 onGoogleLoginButtonClicked = { viewModel.onEvent(GoogleLoginButtonClicked) },
                 onFacebookLoginButtonClicked = { viewModel.onEvent(FacebookLoginButtonClicked) },

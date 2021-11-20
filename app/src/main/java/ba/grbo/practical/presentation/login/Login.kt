@@ -36,8 +36,10 @@ fun Login(
     passwordMasked: Boolean,
     feedback: Feedback,
     onEmailChange: (String) -> Unit,
+    onResetEmailButtonClicked: () -> Unit,
     onPasswordChange: (String) -> Unit,
     onPasswordVisibilityButtonClicked: () -> Unit,
+    onResetPasswordButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
     onGoogleLoginButtonClicked: () -> Unit,
     onFacebookLoginButtonClicked: () -> Unit,
@@ -49,7 +51,7 @@ fun Login(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val keyboardOpened by keyboardAsState()
-        val spacer = 24.dp
+        val spacer by animateDpAsState(if (keyboardOpened) 16.dp else 24.dp)
         val specialSpacer by animateDpAsState(if (keyboardOpened) 18.dp else 36.dp)
         val specialSpacerTwo by animateDpAsState(if (keyboardOpened) 14.dp else 24.dp)
 
@@ -68,7 +70,8 @@ fun Login(
         EmailInput(
             modifier = Modifier.fillMaxWidth(),
             email = email,
-            onEmailChange = onEmailChange
+            onEmailChange = onEmailChange,
+            onResetEmailButtonClicked = onResetEmailButtonClicked
         )
 
         Spacer(modifier = Modifier.height(spacer))
@@ -79,6 +82,7 @@ fun Login(
             masked = passwordMasked,
             onPasswordChange = onPasswordChange,
             onPasswordVisibilityButtonClicked = onPasswordVisibilityButtonClicked,
+            onResetPasswordButtonClicked = onResetPasswordButtonClicked ,
             onDoneImeActionClicked = onLoginButtonClicked
         )
 
@@ -122,8 +126,10 @@ fun LoginPreview() {
                 passwordMasked = true,
                 feedback = Feedback.DEFAULT,
                 onEmailChange = {},
+                onResetEmailButtonClicked = {},
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
+                onResetPasswordButtonClicked = {},
                 onLoginButtonClicked = {},
                 onGoogleLoginButtonClicked = {},
                 onFacebookLoginButtonClicked = {},

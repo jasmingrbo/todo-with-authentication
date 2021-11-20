@@ -1,12 +1,15 @@
 package ba.grbo.practical.presentation.composables
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +28,7 @@ fun PasswordInput(
     masked: Boolean,
     onPasswordChange: (String) -> Unit,
     onPasswordVisibilityButtonClicked: () -> Unit,
+    onResetPasswordButtonClicked: () -> Unit,
     onDoneImeActionClicked: () -> Unit
 ) {
     Input(
@@ -41,10 +45,20 @@ fun PasswordInput(
         ),
         onValueChange = onPasswordChange
     ) {
-        PasswordVisibilityButton(
-            visible = !masked,
-            onClick = onPasswordVisibilityButtonClicked
-        )
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ResetButton(
+                visible = password.isNotEmpty(),
+                onClick = onResetPasswordButtonClicked
+            )
+
+            PasswordVisibilityButton(
+                visible = !masked,
+                onClick = onPasswordVisibilityButtonClicked
+            )
+        }
     }
 }
 
@@ -118,6 +132,7 @@ fun PasswordInputEmptyMaskedPreview() {
                 masked = true,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
+                onResetPasswordButtonClicked = {},
                 onDoneImeActionClicked = {}
             )
         }
@@ -142,6 +157,7 @@ fun PasswordInputEmptyUnmaskedPreview() {
                 masked = false,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
+                onResetPasswordButtonClicked = {},
                 onDoneImeActionClicked = {}
             )
         }
@@ -166,6 +182,7 @@ fun PasswordInputNonEmptyMaskedPreview() {
                 masked = true,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
+                onResetPasswordButtonClicked = {},
                 onDoneImeActionClicked = {}
             )
         }
@@ -190,6 +207,7 @@ fun PasswordInputNonEmptyUnmaskedPreview() {
                 masked = false,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
+                onResetPasswordButtonClicked = {},
                 onDoneImeActionClicked = {}
             )
         }

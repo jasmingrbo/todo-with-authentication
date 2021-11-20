@@ -9,4 +9,5 @@
     <string name="facebook_image_description">Facebook logo</string>
     <string name="sign_up_text_first_part">Don\'t have an account?</string>
     <string name="sign_up_text_second_part">Sign up</string>
+    <string name="reset_button_description">X or cross sign</string>
 </resources>

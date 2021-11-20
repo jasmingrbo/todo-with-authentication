@@ -15,4 +15,9 @@
     <string name="reset_button_description">X or cross sign</string>
     <string name="sign_up_with_email">Or, sign up with email…</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="restore_email_sent">An email with the instructions has been sent to you.</string>
+    <string name="email_empty">Please enter the email.</string>
+
+    <string name="incorrect_credentials">Email or password incorrect.</string>
+    <string name="successfully_signed_up">Successfully signed up.</string>
 </resources>

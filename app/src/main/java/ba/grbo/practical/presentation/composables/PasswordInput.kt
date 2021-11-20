@@ -32,7 +32,7 @@ fun PasswordInput(
     onPasswordChange: (String) -> Unit,
     onPasswordVisibilityButtonClicked: () -> Unit,
     onResetPasswordButtonClicked: () -> Unit,
-    onImeActionClicked: () -> Unit
+    onImeActionButtonClicked: () -> Unit
 ) {
     Input(
         modifier = modifier,
@@ -44,8 +44,8 @@ fun PasswordInput(
             imeAction = imeAction
         ),
         keyboardActions = KeyboardActions(
-            onDone = { onImeActionClicked() },
-            onNext = { onImeActionClicked() }
+            onDone = { onImeActionButtonClicked() },
+            onNext = { onImeActionButtonClicked() }
         ),
         onValueChange = onPasswordChange
     ) {
@@ -138,7 +138,7 @@ fun PasswordInputEmptyMaskedPreview() {
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onImeActionClicked = {}
+                onImeActionButtonClicked = {}
             )
         }
     }
@@ -164,7 +164,7 @@ fun PasswordInputEmptyUnmaskedPreview() {
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onImeActionClicked = {}
+                onImeActionButtonClicked = {}
             )
         }
     }
@@ -190,7 +190,7 @@ fun PasswordInputNonEmptyMaskedPreview() {
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onImeActionClicked = {}
+                onImeActionButtonClicked = {}
             )
         }
     }
@@ -216,7 +216,7 @@ fun PasswordInputNonEmptyUnmaskedPreview() {
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onImeActionClicked = {}
+                onImeActionButtonClicked = {}
             )
         }
     }

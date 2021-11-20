@@ -6,9 +6,12 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import ba.grbo.practical.R
 import ba.grbo.practical.framework.data.state.Feedback
+import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
 
 @Composable
@@ -16,10 +19,11 @@ fun Feedback(
     modifier: Modifier = Modifier,
     feedback: Feedback
 ) {
-    if (feedback.message.isNotEmpty()) Text(
+    if (feedback.message != Int.DEFAULT) Text(
         modifier = modifier,
-        text = feedback.message,
-        color = if (feedback.error) MaterialTheme.colors.error else Color.Green
+        text = stringResource(feedback.message),
+        textAlign = TextAlign.Center,
+        color = if (feedback.error) MaterialTheme.colors.error else MaterialTheme.colors.secondary
     )
 }
 
@@ -38,7 +42,7 @@ fun FeedbackIncorrectCredentialsPreview() {
         Surface {
             Feedback(
                 feedback = Feedback(
-                    message = "Email or password incorrect.",
+                    message = R.string.incorrect_credentials,
                     error = true
                 )
             )
@@ -61,7 +65,7 @@ fun FeedbackSuccessfullySignedUpPreview() {
         Surface {
             Feedback(
                 feedback = Feedback(
-                    message = "Successfully signed up.",
+                    message = R.string.successfully_signed_up,
                     error = false
                 )
             )

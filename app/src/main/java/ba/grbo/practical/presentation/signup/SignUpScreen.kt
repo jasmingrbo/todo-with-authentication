@@ -68,16 +68,18 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(spacer))
 
+        val focusManager = LocalFocusManager.current
         EmailInput(
             modifier = Modifier.fillMaxWidth(),
             email = email,
             onEmailChange = onEmailChange,
-            onResetEmailButtonClicked = onResetEmailButtonClicked
+            onResetEmailButtonClicked = onResetEmailButtonClicked,
+            onImeActionButtonClicked = { focusManager.moveFocus(FocusDirection.Down) }
         )
 
         Spacer(modifier = Modifier.height(spacer))
 
-        val focusManager = LocalFocusManager.current
+
         PasswordInput(
             modifier = Modifier.fillMaxWidth(),
             password = password.value,
@@ -86,7 +88,7 @@ fun SignUpScreen(
             onPasswordChange = onPasswordChange,
             onPasswordVisibilityButtonClicked = onPasswordVisibilityButtonClicked,
             onResetPasswordButtonClicked = onResetPasswordButtonClicked,
-            onImeActionClicked = { focusManager.moveFocus(FocusDirection.Down) }
+            onImeActionButtonClicked = { focusManager.moveFocus(FocusDirection.Down) }
         )
 
         Spacer(modifier = Modifier.height(spacer))
@@ -100,7 +102,7 @@ fun SignUpScreen(
             onPasswordChange = onRepeatedPasswordChange,
             onPasswordVisibilityButtonClicked = onRepeatedPasswordVisibilityButtonClicked,
             onResetPasswordButtonClicked = onResetRepeatedPasswordButtonClicked,
-            onImeActionClicked = onSignUpButtonClicked
+            onImeActionButtonClicked = onSignUpButtonClicked
         )
 
         Spacer(modifier = Modifier.height(spacer))

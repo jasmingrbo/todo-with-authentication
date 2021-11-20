@@ -1,9 +1,10 @@
 package ba.grbo.practical.framework.data.state
 
+import androidx.annotation.StringRes
 import ba.grbo.practical.framework.mics.DEFAULT
 
-data class Feedback(val message: String, val error: Boolean) {
+data class Feedback(@StringRes val message: Int, val error: Boolean) {
     companion object {
-        val DEFAULT = Feedback(message = String.DEFAULT, error = false)
+        val DEFAULT = Feedback(message = Int.DEFAULT, error = false)
     }
 }

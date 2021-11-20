@@ -1,12 +1,7 @@
 package ba.grbo.practical.presentation.composables
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,10 +15,16 @@ import ba.grbo.practical.framework.data.state.LoginEvent.PasswordChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordVisibilityButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetEmailButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetPasswordButtonClicked
-import ba.grbo.practical.framework.data.state.Screen
+import ba.grbo.practical.framework.data.state.RestorePasswordEvent
+import ba.grbo.practical.framework.data.state.Screen.HOME
+import ba.grbo.practical.framework.data.state.Screen.LOGIN
+import ba.grbo.practical.framework.data.state.Screen.RESTORE_PASSWORD
+import ba.grbo.practical.framework.data.state.Screen.SIGN_UP
 import ba.grbo.practical.framework.data.state.SignUpEvent
 import ba.grbo.practical.presentation.login.LoginScreen
 import ba.grbo.practical.presentation.login.LoginViewModel
+import ba.grbo.practical.presentation.restorepassword.RestorePasswordScreen
+import ba.grbo.practical.presentation.restorepassword.RestorePasswordViewModel
 import ba.grbo.practical.presentation.signup.SignUpScreen
 import ba.grbo.practical.presentation.signup.SignUpViewModel
 
@@ -35,21 +36,18 @@ fun PracticalNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Screen.LOGIN.route
+        startDestination = LOGIN.route
     ) {
-        composable(Screen.LOGIN.route) {
+        composable(LOGIN.route) {
             val viewModel = hiltViewModel<LoginViewModel>()
             LoginScreen(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState()),
                 email = viewModel.state.email,
                 password = viewModel.state.password,
                 feedback = viewModel.state.feedback,
                 onEmailChange = { email -> viewModel.onEvent(EmailChanged(email)) },
                 onResetEmailButtonClicked = { viewModel.onEvent(ResetEmailButtonClicked) },
                 onPasswordChange = { pw -> viewModel.onEvent(PasswordChanged(pw)) },
+                onForgotPasswordTextClicked = { navController.navigate(RESTORE_PASSWORD.route) },
                 onPasswordVisibilityButtonClicked = {
                     viewModel.onEvent(PasswordVisibilityButtonClicked)
                 },
@@ -57,17 +55,13 @@ fun PracticalNavHost(
                 onLoginButtonClicked = { viewModel.onEvent(LoginButtonClicked) },
                 onGoogleLoginButtonClicked = { viewModel.onEvent(GoogleLoginButtonClicked) },
                 onFacebookLoginButtonClicked = { viewModel.onEvent(FacebookLoginButtonClicked) },
-                onSignUpTextClicked = { navController.navigate(Screen.SIGN_UP.route) }
+                onSignUpTextClicked = { navController.navigate(SIGN_UP.route) }
             )
         }
 
-        composable(Screen.SIGN_UP.route) {
+        composable(SIGN_UP.route) {
             val viewModel = hiltViewModel<SignUpViewModel>()
             SignUpScreen(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState()),
                 email = viewModel.state.email,
                 password = viewModel.state.password,
                 feedback = viewModel.state.feedback,
@@ -103,7 +97,24 @@ fun PracticalNavHost(
             )
         }
 
-        composable(Screen.HOME.route) {
+        composable(RESTORE_PASSWORD.route) {
+            val viewModel = hiltViewModel<RestorePasswordViewModel>()
+            RestorePasswordScreen(
+                email = viewModel.state.email,
+                feedback = viewModel.state.feedback,
+                onEmailChange = { email ->
+                    viewModel.onEvent(RestorePasswordEvent.EmailChanged(email))
+                },
+                onResetEmailButtonClicked = {
+                    viewModel.onEvent(RestorePasswordEvent.ResetEmailButtonClicked)
+                },
+                onRestorePasswordClicked = {
+                    viewModel.onEvent(RestorePasswordEvent.RestorePasswordButtonClicked)
+                }
+            )
+        }
+
+        composable(HOME.route) {
 
         }
     }

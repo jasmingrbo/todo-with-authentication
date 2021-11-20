@@ -2,8 +2,6 @@ package ba.grbo.practical.presentation.login
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,13 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ba.grbo.practical.R
 import ba.grbo.practical.framework.data.state.Feedback
-import ba.grbo.practical.framework.data.state.LoginState
 import ba.grbo.practical.framework.data.state.LoginState.Password
 import ba.grbo.practical.framework.theme.PracticalTheme
+import ba.grbo.practical.presentation.composables.CredentialScreen
 import ba.grbo.practical.presentation.composables.EmailInput
 import ba.grbo.practical.presentation.composables.Feedback
 import ba.grbo.practical.presentation.composables.LoginButton
 import ba.grbo.practical.presentation.composables.PasswordInput
+import ba.grbo.practical.presentation.composables.RestorePassword
 import ba.grbo.practical.presentation.composables.SignUp
 import ba.grbo.practical.presentation.composables.ThirdPartyLoginButtons
 import ba.grbo.practical.presentation.keyboardAsState
@@ -40,6 +39,7 @@ fun LoginScreen(
     onEmailChange: (String) -> Unit,
     onResetEmailButtonClicked: () -> Unit,
     onPasswordChange: (String) -> Unit,
+    onForgotPasswordTextClicked: () -> Unit,
     onPasswordVisibilityButtonClicked: () -> Unit,
     onResetPasswordButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
@@ -47,15 +47,11 @@ fun LoginScreen(
     onFacebookLoginButtonClicked: () -> Unit,
     onSignUpTextClicked: () -> Unit
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    CredentialScreen(modifier = modifier) {
         val keyboardOpened by keyboardAsState()
-        val spacer by animateDpAsState(if (keyboardOpened) 16.dp else 24.dp)
+        val spacer by animateDpAsState(if (keyboardOpened) 12.dp else 24.dp)
         val specialSpacer by animateDpAsState(if (keyboardOpened) 18.dp else 36.dp)
-        val specialSpacerTwo by animateDpAsState(if (keyboardOpened) 14.dp else 24.dp)
+        val fixedSpacer = 24.dp
 
         Feedback(feedback = feedback)
 
@@ -89,7 +85,14 @@ fun LoginScreen(
             onImeActionClicked = onLoginButtonClicked
         )
 
-        Spacer(modifier = Modifier.height(spacer))
+        Spacer(modifier = Modifier.height(spacer / 2))
+
+        RestorePassword(
+            modifier = Modifier.align(Alignment.End),
+            onClick = onForgotPasswordTextClicked
+        )
+
+        Spacer(modifier = Modifier.height(fixedSpacer))
 
         LoginButton(
             modifier = Modifier.fillMaxWidth(),
@@ -104,7 +107,7 @@ fun LoginScreen(
             onFacebookLoginButtonClicked = onFacebookLoginButtonClicked
         )
 
-        Spacer(modifier = Modifier.height(specialSpacerTwo))
+        Spacer(modifier = Modifier.height(spacer))
 
         SignUp(onSignUpTextClicked = onSignUpTextClicked)
     }
@@ -130,6 +133,7 @@ fun LoginPreview() {
                 onEmailChange = {},
                 onResetEmailButtonClicked = {},
                 onPasswordChange = {},
+                onForgotPasswordTextClicked = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
                 onLoginButtonClicked = {},

@@ -46,6 +46,4 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         is FacebookLoginButtonClicked -> { /*TODO*/
         }
     }
-
-
 }

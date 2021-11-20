@@ -1,8 +1,6 @@
 package ba.grbo.practical.presentation.signup
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import ba.grbo.practical.R
 import ba.grbo.practical.framework.data.state.Feedback
 import ba.grbo.practical.framework.data.state.SignUpState.Password
+import ba.grbo.practical.presentation.composables.CredentialScreen
 import ba.grbo.practical.presentation.composables.EmailInput
 import ba.grbo.practical.presentation.composables.Feedback
 import ba.grbo.practical.presentation.composables.PasswordInput
@@ -45,15 +44,13 @@ fun SignUpScreen(
     onFacebookSignUpButtonClicked: () -> Unit,
     onSignUpButtonClicked: () -> Unit,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    CredentialScreen(modifier = modifier) {
         val keyboardOpened by keyboardAsState()
         val spacer by animateDpAsState(if (keyboardOpened) 16.dp else 24.dp)
 
         Feedback(feedback = feedback)
+
+        Spacer(modifier = Modifier.height(spacer))
 
         Text(
             modifier = Modifier.align(Alignment.Start),
@@ -79,7 +76,6 @@ fun SignUpScreen(
         )
 
         Spacer(modifier = Modifier.height(spacer))
-
 
         val focusManager = LocalFocusManager.current
         PasswordInput(

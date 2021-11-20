@@ -2,6 +2,7 @@
     <string name="app_name">Practical</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign up</string>
+    <string name="restore_password">Restore password</string>
     <string name="email_input_placeholder">Email</string>
     <string name="password_input_placeholder">Password</string>
     <string name="repeat_password_input_placeholder">Repeat password</string>
@@ -13,4 +14,5 @@
     <string name="sign_up_text_second_part">Sign up</string>
     <string name="reset_button_description">X or cross sign</string>
     <string name="sign_up_with_email">Or, sign up with email…</string>
+    <string name="forgot_password">Forgot password?</string>
 </resources>

@@ -14,26 +14,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.LoginState.Feedback
+import ba.grbo.practical.framework.data.state.Feedback
+import ba.grbo.practical.framework.data.state.LoginState
+import ba.grbo.practical.framework.data.state.LoginState.Password
 import ba.grbo.practical.framework.theme.PracticalTheme
 import ba.grbo.practical.presentation.composables.EmailInput
 import ba.grbo.practical.presentation.composables.Feedback
 import ba.grbo.practical.presentation.composables.LoginButton
 import ba.grbo.practical.presentation.composables.PasswordInput
 import ba.grbo.practical.presentation.composables.SignUp
-import ba.grbo.practical.presentation.composables.ThirdPartyLogin
+import ba.grbo.practical.presentation.composables.ThirdPartyLoginButtons
 import ba.grbo.practical.presentation.keyboardAsState
 
 @Composable
-fun Login(
+fun LoginScreen(
     modifier: Modifier = Modifier,
     email: String,
-    password: String,
-    passwordMasked: Boolean,
+    password: Password,
     feedback: Feedback,
     onEmailChange: (String) -> Unit,
     onResetEmailButtonClicked: () -> Unit,
@@ -78,12 +80,13 @@ fun Login(
 
         PasswordInput(
             modifier = Modifier.fillMaxWidth(),
-            password = password,
-            masked = passwordMasked,
+            password = password.value,
+            masked = password.masked,
+            imeAction = ImeAction.Done,
             onPasswordChange = onPasswordChange,
             onPasswordVisibilityButtonClicked = onPasswordVisibilityButtonClicked,
-            onResetPasswordButtonClicked = onResetPasswordButtonClicked ,
-            onDoneImeActionClicked = onLoginButtonClicked
+            onResetPasswordButtonClicked = onResetPasswordButtonClicked,
+            onImeActionClicked = onLoginButtonClicked
         )
 
         Spacer(modifier = Modifier.height(spacer))
@@ -95,7 +98,7 @@ fun Login(
 
         Spacer(modifier = Modifier.height(specialSpacer))
 
-        ThirdPartyLogin(
+        ThirdPartyLoginButtons(
             modifier = Modifier.fillMaxWidth(),
             onGoogleLoginButtonClicked = onGoogleLoginButtonClicked,
             onFacebookLoginButtonClicked = onFacebookLoginButtonClicked
@@ -120,10 +123,9 @@ fun Login(
 fun LoginPreview() {
     PracticalTheme {
         Surface {
-            Login(
+            LoginScreen(
                 email = "grbo.dev@gmail.com",
-                password = "1234",
-                passwordMasked = true,
+                password = Password.DEFAULT,
                 feedback = Feedback.DEFAULT,
                 onEmailChange = {},
                 onResetEmailButtonClicked = {},

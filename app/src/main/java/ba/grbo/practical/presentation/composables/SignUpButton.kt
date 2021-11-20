@@ -5,14 +5,13 @@ import androidx.compose.ui.Modifier
 import ba.grbo.practical.R
 
 @Composable
-fun GoogleLogin(
+fun SignUpButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    AlternativeLoginButton(
+    CustomButton(
         modifier = modifier,
-        image = R.drawable.google,
-        imageDescription = R.string.google_image_description,
+        text = R.string.sign_up,
         onClick = onClick
     )
 }

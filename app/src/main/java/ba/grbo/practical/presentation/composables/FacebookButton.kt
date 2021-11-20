@@ -5,11 +5,11 @@ import androidx.compose.ui.Modifier
 import ba.grbo.practical.R
 
 @Composable
-fun FacebookLogin(
+fun FacebookButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    AlternativeLoginButton(
+    ThirdPartyCredentialsReceiverButton(
         modifier = modifier,
         image = R.drawable.facebook,
         imageDescription = R.string.facebook_image_description,

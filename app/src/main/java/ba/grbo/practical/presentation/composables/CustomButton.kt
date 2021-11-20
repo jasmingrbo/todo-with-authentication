@@ -1,30 +1,30 @@
 package ba.grbo.practical.presentation.composables
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 
 @Composable
-fun AlternativeLoginButton(
+fun CustomButton(
     modifier: Modifier = Modifier,
-    @DrawableRes image: Int,
-    @StringRes imageDescription: Int,
+    @StringRes text: Int,
     onClick: () -> Unit
 ) {
-    OutlinedButton(
+    Button(
         modifier = modifier,
         shape = CircleShape,
         onClick = onClick
     ) {
-        Image(
-            painter = painterResource(image),
-            contentDescription = stringResource(imageDescription)
+        Text(
+            modifier = Modifier.padding(vertical = 10.dp),
+            text = stringResource(text)
         )
     }
+
 }

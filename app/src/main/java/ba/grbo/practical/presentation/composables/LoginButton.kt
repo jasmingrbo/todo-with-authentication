@@ -21,16 +21,11 @@ fun LoginButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    Button(
+    CustomButton(
         modifier = modifier,
-        shape = CircleShape,
+        text = R.string.login,
         onClick = onClick
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 10.dp),
-            text = stringResource(R.string.login)
-        )
-    }
+    )
 }
 
 @Preview(

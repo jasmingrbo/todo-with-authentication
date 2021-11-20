@@ -13,8 +13,8 @@ import ba.grbo.practical.framework.data.state.LoginEvent.PasswordChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordVisibilityButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetEmailButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetPasswordButtonClicked
-import ba.grbo.practical.framework.data.state.LoginEvent.SignUpTextClicked
 import ba.grbo.practical.framework.data.state.LoginState
+import ba.grbo.practical.framework.mics.DEFAULT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,24 +28,22 @@ class LoginViewModel @Inject constructor() : ViewModel() {
             state = state.copy(email = event.email)
         }
         is ResetEmailButtonClicked -> {
-            state = state.copy(email = "")
+            state = state.copy(email = String.DEFAULT)
         }
         is PasswordChanged -> {
-            state = state.copy(password = event.password)
+            state = state.copy(password = state.password.copy(value = event.password))
         }
         is PasswordVisibilityButtonClicked -> {
-            state = state.copy(passwordMasked = !state.passwordMasked)
+            state = state.copy(password = state.password.copy(masked = !state.password.masked))
         }
         is ResetPasswordButtonClicked -> {
-            state = state.copy(password = "")
+            state = state.copy(password = state.password.copy(value = String.DEFAULT))
         }
         is LoginButtonClicked -> { /*TODO*/
         }
         is GoogleLoginButtonClicked -> { /*TODO*/
         }
         is FacebookLoginButtonClicked -> { /*TODO*/
-        }
-        is SignUpTextClicked -> { /*TODO*/
         }
     }
 

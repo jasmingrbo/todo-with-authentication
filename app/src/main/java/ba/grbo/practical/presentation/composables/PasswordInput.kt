@@ -1,6 +1,7 @@
 package ba.grbo.practical.presentation.composables
 
 import android.content.res.Configuration
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardActions
@@ -26,22 +27,25 @@ fun PasswordInput(
     modifier: Modifier = Modifier,
     password: String,
     masked: Boolean,
+    imeAction: ImeAction,
+    @StringRes label: Int =  R.string.password_input_placeholder,
     onPasswordChange: (String) -> Unit,
     onPasswordVisibilityButtonClicked: () -> Unit,
     onResetPasswordButtonClicked: () -> Unit,
-    onDoneImeActionClicked: () -> Unit
+    onImeActionClicked: () -> Unit
 ) {
     Input(
         modifier = modifier,
         value = password,
-        label = R.string.password_input_placeholder,
+        label = label,
         visualTransformation = if (masked) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
+            imeAction = imeAction
         ),
         keyboardActions = KeyboardActions(
-            onDone = { onDoneImeActionClicked() }
+            onDone = { onImeActionClicked() },
+            onNext = { onImeActionClicked() }
         ),
         onValueChange = onPasswordChange
     ) {
@@ -130,10 +134,11 @@ fun PasswordInputEmptyMaskedPreview() {
             PasswordInput(
                 password = "",
                 masked = true,
+                imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onDoneImeActionClicked = {}
+                onImeActionClicked = {}
             )
         }
     }
@@ -155,10 +160,11 @@ fun PasswordInputEmptyUnmaskedPreview() {
             PasswordInput(
                 password = "",
                 masked = false,
+                imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onDoneImeActionClicked = {}
+                onImeActionClicked = {}
             )
         }
     }
@@ -180,10 +186,11 @@ fun PasswordInputNonEmptyMaskedPreview() {
             PasswordInput(
                 password = "12345",
                 masked = true,
+                imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onDoneImeActionClicked = {}
+                onImeActionClicked = {}
             )
         }
     }
@@ -205,10 +212,11 @@ fun PasswordInputNonEmptyUnmaskedPreview() {
             PasswordInput(
                 password = "12345",
                 masked = false,
+                imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
                 onResetPasswordButtonClicked = {},
-                onDoneImeActionClicked = {}
+                onImeActionClicked = {}
             )
         }
     }

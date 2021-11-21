@@ -1,15 +1,7 @@
 package ba.grbo.practical.framework.data.state
 
-import ba.grbo.practical.framework.mics.DEFAULT
-
-data class RestorePasswordState(
-    val email: String,
-    val feedback: Feedback
-) {
+data class RestorePasswordState(val email: Email) {
     companion object {
-        val DEFAULT = RestorePasswordState(
-            email = String.DEFAULT,
-            feedback = Feedback.DEFAULT
-        )
+        val DEFAULT = RestorePasswordState(email = Email.DEFAULT)
     }
 }

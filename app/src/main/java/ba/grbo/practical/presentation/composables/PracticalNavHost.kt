@@ -21,12 +21,12 @@ import ba.grbo.practical.framework.data.state.Screen.LOGIN
 import ba.grbo.practical.framework.data.state.Screen.RESTORE_PASSWORD
 import ba.grbo.practical.framework.data.state.Screen.SIGN_UP
 import ba.grbo.practical.framework.data.state.SignUpEvent
-import ba.grbo.practical.presentation.login.LoginScreen
-import ba.grbo.practical.presentation.login.LoginViewModel
-import ba.grbo.practical.presentation.restorepassword.RestorePasswordScreen
-import ba.grbo.practical.presentation.restorepassword.RestorePasswordViewModel
-import ba.grbo.practical.presentation.signup.SignUpScreen
-import ba.grbo.practical.presentation.signup.SignUpViewModel
+import ba.grbo.practical.presentation.screens.login.LoginScreen
+import ba.grbo.practical.presentation.screens.login.LoginViewModel
+import ba.grbo.practical.presentation.screens.restorepassword.RestorePasswordScreen
+import ba.grbo.practical.presentation.screens.restorepassword.RestorePasswordViewModel
+import ba.grbo.practical.presentation.screens.signup.SignUpScreen
+import ba.grbo.practical.presentation.screens.signup.SignUpViewModel
 
 @Composable
 fun PracticalNavHost(
@@ -43,7 +43,6 @@ fun PracticalNavHost(
             LoginScreen(
                 email = viewModel.state.email,
                 password = viewModel.state.password,
-                feedback = viewModel.state.feedback,
                 onEmailChange = { email -> viewModel.onEvent(EmailChanged(email)) },
                 onResetEmailButtonClicked = { viewModel.onEvent(ResetEmailButtonClicked) },
                 onPasswordChange = { pw -> viewModel.onEvent(PasswordChanged(pw)) },
@@ -64,7 +63,7 @@ fun PracticalNavHost(
             SignUpScreen(
                 email = viewModel.state.email,
                 password = viewModel.state.password,
-                feedback = viewModel.state.feedback,
+                repeatedPassword = viewModel.state.repeatedPassword,
                 onEmailChange = { email -> viewModel.onEvent(SignUpEvent.EmailChanged(email)) },
                 onResetEmailButtonClicked = {
                     viewModel.onEvent(SignUpEvent.ResetEmailButtonClicked)
@@ -101,7 +100,6 @@ fun PracticalNavHost(
             val viewModel = hiltViewModel<RestorePasswordViewModel>()
             RestorePasswordScreen(
                 email = viewModel.state.email,
-                feedback = viewModel.state.feedback,
                 onEmailChange = { email ->
                     viewModel.onEvent(RestorePasswordEvent.EmailChanged(email))
                 },

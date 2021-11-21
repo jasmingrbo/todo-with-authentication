@@ -1,4 +1,4 @@
-package ba.grbo.practical.presentation.login
+package ba.grbo.practical.presentation.screens.login
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
@@ -19,12 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.Feedback
-import ba.grbo.practical.framework.data.state.LoginState.Password
+import ba.grbo.practical.framework.data.state.Email
+import ba.grbo.practical.framework.data.state.Password
+import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
 import ba.grbo.practical.presentation.composables.CredentialScreen
 import ba.grbo.practical.presentation.composables.EmailInput
-import ba.grbo.practical.presentation.composables.Feedback
 import ba.grbo.practical.presentation.composables.LoginButton
 import ba.grbo.practical.presentation.composables.PasswordInput
 import ba.grbo.practical.presentation.composables.RestorePassword
@@ -35,9 +35,8 @@ import ba.grbo.practical.presentation.keyboardAsState
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    email: String,
+    email: Email,
     password: Password,
-    feedback: Feedback,
     onEmailChange: (String) -> Unit,
     onResetEmailButtonClicked: () -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -54,10 +53,6 @@ fun LoginScreen(
         val spacer by animateDpAsState(if (keyboardOpened) 12.dp else 24.dp)
         val specialSpacer by animateDpAsState(if (keyboardOpened) 18.dp else 36.dp)
         val fixedSpacer = 24.dp
-
-        Feedback(feedback = feedback)
-
-        Spacer(modifier = Modifier.height(spacer))
 
         Text(
             modifier = Modifier.align(Alignment.Start),
@@ -80,8 +75,7 @@ fun LoginScreen(
 
         PasswordInput(
             modifier = Modifier.fillMaxWidth(),
-            password = password.value,
-            masked = password.masked,
+            password = password,
             imeAction = ImeAction.Done,
             onPasswordChange = onPasswordChange,
             onPasswordVisibilityButtonClicked = onPasswordVisibilityButtonClicked,
@@ -114,6 +108,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(spacer))
 
         SignUp(onSignUpTextClicked = onSignUpTextClicked)
+        
+        Spacer(modifier = Modifier.height(spacer / 2))
     }
 }
 
@@ -131,9 +127,17 @@ fun LoginPreview() {
     PracticalTheme {
         Surface {
             LoginScreen(
-                email = "grbo.dev@gmail.com",
-                password = Password.DEFAULT,
-                feedback = Feedback.DEFAULT,
+                email = Email(
+                    value = "grbo.dev@gmail.com",
+                    isError = false,
+                    errorMessage = Int.DEFAULT
+                ),
+                password = Password(
+                    value = "123",
+                    masked = true,
+                    isError = false,
+                    errorMessage = Int.DEFAULT
+                ),
                 onEmailChange = {},
                 onResetEmailButtonClicked = {},
                 onPasswordChange = {},

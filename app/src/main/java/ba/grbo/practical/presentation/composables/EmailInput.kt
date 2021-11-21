@@ -10,12 +10,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import ba.grbo.practical.R
+import ba.grbo.practical.framework.data.state.Email
+import ba.grbo.practical.framework.data.state.Inputable
+import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
 
 @Composable
 fun EmailInput(
     modifier: Modifier = Modifier,
-    email: String,
+    email: Inputable,
     imeAction: ImeAction = ImeAction.Next,
     onEmailChange: (String) -> Unit,
     onResetEmailButtonClicked: () -> Unit,
@@ -23,7 +26,9 @@ fun EmailInput(
 ) {
     Input(
         modifier = modifier,
-        value = email,
+        value = email.value,
+        isError = email.isError,
+        errorMessage = email.errorMessage,
         label = R.string.email_input_placeholder,
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Email,
@@ -36,7 +41,7 @@ fun EmailInput(
         onValueChange = onEmailChange
     ) {
         ResetButton(
-            visible = email.isNotEmpty(),
+            visible = email.value.isNotEmpty(),
             onClick = onResetEmailButtonClicked
         )
     }
@@ -55,7 +60,11 @@ fun EmailInput(
 fun EmailInputNonEmptyPreview() {
     PracticalTheme {
         EmailInput(
-            email = "grbo.dev@gmail.com",
+            email = Email(
+                value = "grbo.dev@gmail.com",
+                isError = false,
+                errorMessage = Int.DEFAULT
+            ),
             onEmailChange = {},
             onResetEmailButtonClicked = {},
             onImeActionButtonClicked = {}
@@ -77,7 +86,11 @@ fun EmailInputEmptyPreview() {
     PracticalTheme {
         Surface {
             EmailInput(
-                email = "",
+                email = Email(
+                    value = String.DEFAULT,
+                    isError = true,
+                    errorMessage = R.string.email_empty
+                ),
                 onEmailChange = {},
                 onResetEmailButtonClicked = {},
                 onImeActionButtonClicked = {}

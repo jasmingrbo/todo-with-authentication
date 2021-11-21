@@ -1,4 +1,4 @@
-package ba.grbo.practical.presentation.restorepassword
+package ba.grbo.practical.presentation.screens.restorepassword
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,27 +12,21 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.Feedback
+import ba.grbo.practical.framework.data.state.Email
 import ba.grbo.practical.presentation.composables.CredentialScreen
 import ba.grbo.practical.presentation.composables.EmailInput
-import ba.grbo.practical.presentation.composables.Feedback
 import ba.grbo.practical.presentation.composables.RestorePasswordButton
 
 @Composable
 fun RestorePasswordScreen(
     modifier: Modifier = Modifier,
-    email: String,
-    feedback: Feedback,
+    email: Email,
     onEmailChange: (String) -> Unit,
     onResetEmailButtonClicked: () -> Unit,
     onRestorePasswordClicked: () -> Unit
 ) {
     CredentialScreen(modifier = modifier) {
         val spacer = 24.dp
-
-        Feedback(feedback = feedback)
-
-        Spacer(modifier = Modifier.height(spacer))
 
         Text(
             modifier = Modifier.align(Alignment.Start),
@@ -57,5 +51,7 @@ fun RestorePasswordScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = onRestorePasswordClicked
         )
+
+        Spacer(modifier = Modifier.height(spacer / 2))
     }
 }

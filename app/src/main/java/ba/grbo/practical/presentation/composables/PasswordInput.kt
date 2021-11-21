@@ -20,15 +20,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import ba.grbo.practical.R
+import ba.grbo.practical.framework.data.state.Password
+import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
 
 @Composable
 fun PasswordInput(
     modifier: Modifier = Modifier,
-    password: String,
-    masked: Boolean,
+    password: Password,
     imeAction: ImeAction,
-    @StringRes label: Int =  R.string.password_input_placeholder,
+    @StringRes label: Int = R.string.password_input_placeholder,
     onPasswordChange: (String) -> Unit,
     onPasswordVisibilityButtonClicked: () -> Unit,
     onResetPasswordButtonClicked: () -> Unit,
@@ -36,9 +37,11 @@ fun PasswordInput(
 ) {
     Input(
         modifier = modifier,
-        value = password,
+        value = password.value,
+        isError = password.isError,
+        errorMessage = password.errorMessage,
         label = label,
-        visualTransformation = if (masked) PasswordVisualTransformation() else VisualTransformation.None,
+        visualTransformation = if (password.masked) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Password,
             imeAction = imeAction
@@ -54,12 +57,12 @@ fun PasswordInput(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ResetButton(
-                visible = password.isNotEmpty(),
+                visible = password.value.isNotEmpty(),
                 onClick = onResetPasswordButtonClicked
             )
 
             PasswordVisibilityButton(
-                visible = !masked,
+                visible = !password.masked,
                 onClick = onPasswordVisibilityButtonClicked
             )
         }
@@ -132,8 +135,12 @@ fun PasswordInputEmptyMaskedPreview() {
     PracticalTheme {
         Surface {
             PasswordInput(
-                password = "",
-                masked = true,
+                password = Password(
+                    value = String.DEFAULT,
+                    masked = true,
+                    isError = true,
+                    errorMessage = R.string.password_empty
+                ),
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
@@ -158,8 +165,12 @@ fun PasswordInputEmptyUnmaskedPreview() {
     PracticalTheme {
         Surface {
             PasswordInput(
-                password = "",
-                masked = false,
+                password = Password(
+                    value = String.DEFAULT,
+                    masked = false,
+                    isError = true,
+                    errorMessage = R.string.password_empty
+                ),
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
@@ -184,8 +195,12 @@ fun PasswordInputNonEmptyMaskedPreview() {
     PracticalTheme {
         Surface {
             PasswordInput(
-                password = "12345",
-                masked = true,
+                password = Password(
+                    value = "123",
+                    masked = true,
+                    isError = false,
+                    errorMessage = Int.DEFAULT
+                ),
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
@@ -210,8 +225,12 @@ fun PasswordInputNonEmptyUnmaskedPreview() {
     PracticalTheme {
         Surface {
             PasswordInput(
-                password = "12345",
-                masked = false,
+                password = Password(
+                    value = "123",
+                    masked = false,
+                    isError = false,
+                    errorMessage = Int.DEFAULT
+                ),
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},

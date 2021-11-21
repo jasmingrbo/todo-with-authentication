@@ -1,10 +1,10 @@
 package ba.grbo.practical.framework.mics
 
 import android.util.Patterns
+import ba.grbo.core.domain.Validable
+import ba.grbo.core.domain.Validable.Invalid
+import ba.grbo.core.domain.Validable.Valid
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.Validable
-import ba.grbo.practical.framework.data.state.Validable.Invalid
-import ba.grbo.practical.framework.data.state.Validable.Valid
 
 val String.Companion.DEFAULT: String
     get() = ""

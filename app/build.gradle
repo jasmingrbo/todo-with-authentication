@@ -54,6 +54,8 @@ kotlin.sourceSets.all {
 }
 
 dependencies {
+    implementation project(":core")
+
     implementation androidLib.ktx
     implementation androidLib.appCompat
     implementation androidLib.material

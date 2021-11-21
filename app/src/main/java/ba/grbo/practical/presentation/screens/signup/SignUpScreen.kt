@@ -15,9 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ba.grbo.core.domain.Email
+import ba.grbo.core.domain.Password
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.Email
-import ba.grbo.practical.framework.data.state.Password
 import ba.grbo.practical.presentation.composables.CredentialScreen
 import ba.grbo.practical.presentation.composables.EmailInput
 import ba.grbo.practical.presentation.composables.PasswordInput

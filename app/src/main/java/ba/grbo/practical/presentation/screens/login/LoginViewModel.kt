@@ -4,7 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import ba.grbo.practical.framework.data.state.Email
+import ba.grbo.core.domain.Email
+import ba.grbo.core.domain.Password
+import ba.grbo.core.domain.Validable
 import ba.grbo.practical.framework.data.state.LoginEvent
 import ba.grbo.practical.framework.data.state.LoginEvent.EmailChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.FacebookLoginButtonClicked
@@ -15,8 +17,6 @@ import ba.grbo.practical.framework.data.state.LoginEvent.PasswordVisibilityButto
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetEmailButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetPasswordButtonClicked
 import ba.grbo.practical.framework.data.state.LoginState
-import ba.grbo.practical.framework.data.state.Password
-import ba.grbo.practical.framework.data.state.Validable.Valid
 import ba.grbo.practical.framework.mics.validateEmail
 import ba.grbo.practical.framework.mics.validatePassword
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,7 +52,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         val emailValidity = validateEmail(state.email.value)
         val passwordValidity = validatePassword(state.password.value)
 
-        if (emailValidity is Valid && passwordValidity is Valid) {
+        if (emailValidity is Validable.Valid && passwordValidity is Validable.Valid) {
             // TODO Make a request to login
         } else {
             state = state.copy(

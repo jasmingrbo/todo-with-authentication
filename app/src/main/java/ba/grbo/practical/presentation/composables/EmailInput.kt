@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import ba.grbo.core.domain.Email
+import ba.grbo.core.domain.Inputable
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.Email
-import ba.grbo.practical.framework.data.state.Inputable
 import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
 

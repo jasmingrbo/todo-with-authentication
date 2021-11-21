@@ -18,7 +18,7 @@ ext {
     conf = [
             compileSdk              : 31,
             targetSdk               : 31,
-            minSdk                  : 23,
+            minSdk                  : 21,
             jvmTarget               : "1.8",
             javaCompileCompatibility: JavaVersion.VERSION_1_8,
             applicationId           : "ba.grbo.practical",

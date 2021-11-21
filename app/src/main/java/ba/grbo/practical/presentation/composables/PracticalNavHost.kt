@@ -21,22 +21,26 @@ import ba.grbo.practical.framework.data.state.Screen.LOGIN
 import ba.grbo.practical.framework.data.state.Screen.RESTORE_PASSWORD
 import ba.grbo.practical.framework.data.state.Screen.SIGN_UP
 import ba.grbo.practical.framework.data.state.SignUpEvent
+import ba.grbo.practical.presentation.screens.home.HomeScreen
+import ba.grbo.practical.presentation.screens.home.HomeViewModel
 import ba.grbo.practical.presentation.screens.login.LoginScreen
 import ba.grbo.practical.presentation.screens.login.LoginViewModel
 import ba.grbo.practical.presentation.screens.restorepassword.RestorePasswordScreen
 import ba.grbo.practical.presentation.screens.restorepassword.RestorePasswordViewModel
 import ba.grbo.practical.presentation.screens.signup.SignUpScreen
 import ba.grbo.practical.presentation.screens.signup.SignUpViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun PracticalNavHost(
     modifier: Modifier = Modifier,
+    auth: FirebaseAuth,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = LOGIN.route
+        startDestination = if (auth.currentUser == null) LOGIN.route else HOME.route
     ) {
         composable(LOGIN.route) {
             val viewModel = hiltViewModel<LoginViewModel>()
@@ -113,7 +117,8 @@ fun PracticalNavHost(
         }
 
         composable(HOME.route) {
-
+            val viewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen()
         }
     }
 }

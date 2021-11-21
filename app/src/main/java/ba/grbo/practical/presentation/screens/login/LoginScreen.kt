@@ -18,9 +18,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ba.grbo.core.domain.Email
+import ba.grbo.core.domain.Password
 import ba.grbo.practical.R
-import ba.grbo.practical.framework.data.state.Email
-import ba.grbo.practical.framework.data.state.Password
 import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
 import ba.grbo.practical.presentation.composables.CredentialScreen

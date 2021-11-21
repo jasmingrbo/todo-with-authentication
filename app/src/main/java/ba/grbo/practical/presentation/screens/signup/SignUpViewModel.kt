@@ -4,8 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import ba.grbo.practical.framework.data.state.Email
-import ba.grbo.practical.framework.data.state.Password
+import ba.grbo.core.domain.Email
+import ba.grbo.core.domain.Password
+import ba.grbo.core.domain.Validable
 import ba.grbo.practical.framework.data.state.SignUpEvent
 import ba.grbo.practical.framework.data.state.SignUpEvent.EmailChanged
 import ba.grbo.practical.framework.data.state.SignUpEvent.FacebookSignUpButtonClicked
@@ -19,7 +20,6 @@ import ba.grbo.practical.framework.data.state.SignUpEvent.ResetPasswordButtonCli
 import ba.grbo.practical.framework.data.state.SignUpEvent.ResetRepeatedPasswordButtonClicked
 import ba.grbo.practical.framework.data.state.SignUpEvent.SignUpButtonClicked
 import ba.grbo.practical.framework.data.state.SignUpState
-import ba.grbo.practical.framework.data.state.Validable.Valid
 import ba.grbo.practical.framework.mics.validateEmail
 import ba.grbo.practical.framework.mics.validatePassword
 import ba.grbo.practical.framework.mics.validatePasswords
@@ -75,7 +75,7 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
             repeatedPassword = state.repeatedPassword.value
         )
 
-        if (emailValidity is Valid && passwordValidity is Valid && passwordsValidity is Valid) {
+        if (emailValidity is Validable.Valid && passwordValidity is Validable.Valid && passwordsValidity is Validable.Valid) {
             // TODO Make a request to sign up
         } else {
             state = state.copy(

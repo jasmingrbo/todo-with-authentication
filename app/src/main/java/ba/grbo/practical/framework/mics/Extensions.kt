@@ -20,7 +20,7 @@ fun validateEmail(email: String): Validable = when {
 
 fun validatePassword(password: String): Validable = when {
     password.isEmpty() -> Invalid(R.string.password_empty)
-    password.length < 3 -> Invalid(R.string.password_invalid)
+    password.length < 6 -> Invalid(R.string.password_invalid)
     else -> Valid
 }
 

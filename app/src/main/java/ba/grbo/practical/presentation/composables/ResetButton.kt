@@ -4,8 +4,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -18,6 +21,7 @@ import ba.grbo.practical.R
 fun ResetButton(
     modifier: Modifier = Modifier,
     visible: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     AnimatedVisibility(
@@ -27,11 +31,15 @@ fun ResetButton(
     ) {
         IconButton(
             modifier = modifier,
+            enabled = enabled,
             onClick = onClick
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = stringResource(R.string.reset_button_description)
+                contentDescription = stringResource(R.string.reset_button_description),
+                tint = MaterialTheme.colors.onSurface.copy(
+                    alpha = if (enabled) TextFieldDefaults.IconOpacity else ContentAlpha.disabled
+                )
             )
         }
     }

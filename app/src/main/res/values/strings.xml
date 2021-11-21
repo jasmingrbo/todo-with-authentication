@@ -20,8 +20,17 @@
     <string name="email_empty">Email empty</string>
     <string name="email_invalid">Email invalid</string>
     <string name="password_empty">Password empty</string>
-    <string name="password_invalid">Password shorter than 3 characters</string>
+    <string name="password_invalid">Password shorter than 6 characters</string>
     <string name="passwords_invalid">Passwords don\'t match</string>
+
+    <string name="login_failed">Invalid credentials</string>
+    <string name="login_succeeded">Login succeeded</string>
+
+    <string name="sign_up_failed_generic">Signing up failed</string>
+    <string name="sign_up_failed_email_used">Email already used</string>
+    <string name="sign_up_succeeded">Successfully signed up</string>
+
+    <string name="password_restore_not_implemented">Feature not implemented :)</string>
 
     <string name="incorrect_credentials">Email or password incorrect.</string>
     <string name="successfully_signed_up">Successfully signed up.</string>

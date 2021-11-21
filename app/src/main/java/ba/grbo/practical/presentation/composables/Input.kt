@@ -24,6 +24,7 @@ import ba.grbo.practical.framework.mics.DEFAULT
 fun Input(
     modifier: Modifier = Modifier,
     value: String,
+    enabled: Boolean,
     isError: Boolean,
     @StringRes errorMessage: Int,
     @StringRes label: Int,
@@ -38,6 +39,7 @@ fun Input(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
+            enabled = enabled,
             label = { Text(text = stringResource(id = label)) },
             trailingIcon = trailingIcon,
             isError = isError,

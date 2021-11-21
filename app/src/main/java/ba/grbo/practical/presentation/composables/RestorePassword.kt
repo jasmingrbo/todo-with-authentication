@@ -1,7 +1,9 @@
 package ba.grbo.practical.presentation.composables
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,6 +18,7 @@ import ba.grbo.practical.framework.mics.DEFAULT
 @Composable
 fun RestorePassword(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     val tag = "forgotPassword"
@@ -25,7 +28,13 @@ fun RestorePassword(
             annotation = String.DEFAULT
         )
 
-        withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+        withStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colors.primary.copy(
+                    alpha = if (enabled) MaterialTheme.colors.primary.alpha else ContentAlpha.disabled
+                )
+            )
+        ) {
             append(stringResource(R.string.forgot_password))
         }
         pop()
@@ -40,7 +49,7 @@ fun RestorePassword(
                 tag = tag,
                 start = offset,
                 end = offset
-            ).firstOrNull()?.let { onClick() }
+            ).firstOrNull()?.let { if (enabled) onClick() }
         }
     )
 }

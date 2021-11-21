@@ -19,6 +19,7 @@ import ba.grbo.practical.framework.theme.PracticalTheme
 fun EmailInput(
     modifier: Modifier = Modifier,
     email: Inputable,
+    enabled: Boolean,
     imeAction: ImeAction = ImeAction.Next,
     onEmailChange: (String) -> Unit,
     onResetEmailButtonClicked: () -> Unit,
@@ -27,6 +28,7 @@ fun EmailInput(
     Input(
         modifier = modifier,
         value = email.value,
+        enabled = enabled,
         isError = email.isError,
         errorMessage = email.errorMessage,
         label = R.string.email_input_placeholder,
@@ -42,6 +44,7 @@ fun EmailInput(
     ) {
         ResetButton(
             visible = email.value.isNotEmpty(),
+            enabled = enabled,
             onClick = onResetEmailButtonClicked
         )
     }
@@ -65,6 +68,7 @@ fun EmailInputNonEmptyPreview() {
                 isError = false,
                 errorMessage = Int.DEFAULT
             ),
+            enabled = true,
             onEmailChange = {},
             onResetEmailButtonClicked = {},
             onImeActionButtonClicked = {}
@@ -91,6 +95,7 @@ fun EmailInputEmptyPreview() {
                     isError = true,
                     errorMessage = R.string.email_empty
                 ),
+                enabled = true,
                 onEmailChange = {},
                 onResetEmailButtonClicked = {},
                 onImeActionButtonClicked = {}

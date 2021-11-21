@@ -1,12 +1,10 @@
 package ba.grbo.practical.presentation.composables
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -16,11 +14,18 @@ import ba.grbo.practical.framework.mics.DEFAULT
 
 @Composable
 fun SignUp(
+    enabled: Boolean,
     onSignUpTextClicked: () -> Unit
 ) {
     val tag = "signUp"
     val annotatedText = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = LocalContentColor.current)) {
+        withStyle(
+            style = SpanStyle(
+                color = LocalContentColor.current.copy(
+                    if (enabled) LocalContentColor.current.alpha else ContentAlpha.disabled
+                )
+            )
+        ) {
             append(stringResource(R.string.sign_up_text_first_part))
             append(" ")
         }
@@ -32,7 +37,9 @@ fun SignUp(
 
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.primary.copy(
+                    alpha = if (enabled) MaterialTheme.colors.primary.alpha else ContentAlpha.disabled
+                )
             )
         ) {
             append(stringResource(R.string.sign_up_text_second_part))
@@ -47,7 +54,7 @@ fun SignUp(
                 tag = tag,
                 start = offset,
                 end = offset
-            ).firstOrNull()?.let { onSignUpTextClicked() }
+            ).firstOrNull()?.let { if (enabled) onSignUpTextClicked() }
         }
     )
 }

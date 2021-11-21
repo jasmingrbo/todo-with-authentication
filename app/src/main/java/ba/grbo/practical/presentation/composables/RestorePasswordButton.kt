@@ -7,11 +7,13 @@ import ba.grbo.practical.R
 @Composable
 fun RestorePasswordButton(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     CustomButton(
         modifier = modifier,
         text = R.string.restore_password,
+        enabled = enabled,
         onClick = onClick
     )
 }

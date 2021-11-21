@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ThirdPartyCredentialReceiverButtons(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onGoogleButtonClicked: () -> Unit,
     onFacebookButtonClicked: () -> Unit
 ) {
@@ -24,6 +25,7 @@ fun ThirdPartyCredentialReceiverButtons(
     ) {
         GoogleButton(
             modifier = Modifier.size(60.dp),
+            enabled = enabled,
             onClick = onGoogleButtonClicked
         )
 
@@ -31,6 +33,7 @@ fun ThirdPartyCredentialReceiverButtons(
 
         FacebookButton(
             modifier = Modifier.size(60.dp),
+            enabled = enabled,
             onClick = onFacebookButtonClicked
         )
     }

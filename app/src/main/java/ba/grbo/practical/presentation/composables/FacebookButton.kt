@@ -7,12 +7,14 @@ import ba.grbo.practical.R
 @Composable
 fun FacebookButton(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     ThirdPartyCredentialsReceiverButton(
         modifier = modifier,
         image = R.drawable.facebook,
         imageDescription = R.string.facebook_image_description,
+        enabled = enabled,
         onClick = onClick
     )
 }

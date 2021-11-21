@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +31,7 @@ import ba.grbo.practical.framework.theme.PracticalTheme
 fun PasswordInput(
     modifier: Modifier = Modifier,
     password: Password,
+    enabled: Boolean,
     imeAction: ImeAction,
     @StringRes label: Int = R.string.password_input_placeholder,
     onPasswordChange: (String) -> Unit,
@@ -38,6 +42,7 @@ fun PasswordInput(
     Input(
         modifier = modifier,
         value = password.value,
+        enabled = enabled,
         isError = password.isError,
         errorMessage = password.errorMessage,
         label = label,
@@ -58,11 +63,13 @@ fun PasswordInput(
         ) {
             ResetButton(
                 visible = password.value.isNotEmpty(),
+                enabled = enabled,
                 onClick = onResetPasswordButtonClicked
             )
 
             PasswordVisibilityButton(
                 visible = !password.masked,
+                enabled = enabled,
                 onClick = onPasswordVisibilityButtonClicked
             )
         }
@@ -71,16 +78,25 @@ fun PasswordInput(
 
 @Composable
 fun PasswordVisibilityButton(
+    modifier: Modifier = Modifier,
     visible: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
-    IconButton(onClick = onClick) {
+    IconButton(
+        modifier = modifier,
+        enabled = enabled,
+        onClick = onClick
+    ) {
         Icon(
             painter = painterResource(
                 if (!visible) R.drawable.ic_visibility
                 else R.drawable.ic_visibility_off
             ),
-            contentDescription = stringResource(R.string.password_trailing_icon_description)
+            contentDescription = stringResource(R.string.password_trailing_icon_description),
+            tint = MaterialTheme.colors.onSurface.copy(
+                alpha = if (enabled) TextFieldDefaults.IconOpacity else ContentAlpha.disabled
+            )
         )
     }
 }
@@ -98,7 +114,11 @@ fun PasswordVisibilityButton(
 fun PasswordVisibilityButtonVisiblePreview() {
     PracticalTheme {
         Surface {
-            PasswordVisibilityButton(visible = true, onClick = {})
+            PasswordVisibilityButton(
+                visible = true,
+                enabled = true,
+                onClick = {}
+            )
         }
     }
 }
@@ -116,7 +136,11 @@ fun PasswordVisibilityButtonVisiblePreview() {
 fun PasswordVisibilityButtonInvisiblePreview() {
     PracticalTheme {
         Surface {
-            PasswordVisibilityButton(visible = false, onClick = {})
+            PasswordVisibilityButton(
+                visible = false,
+                enabled = true,
+                onClick = {}
+            )
         }
     }
 }
@@ -141,6 +165,7 @@ fun PasswordInputEmptyMaskedPreview() {
                     isError = true,
                     errorMessage = R.string.password_empty
                 ),
+                enabled = true,
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
@@ -171,6 +196,7 @@ fun PasswordInputEmptyUnmaskedPreview() {
                     isError = true,
                     errorMessage = R.string.password_empty
                 ),
+                enabled = true,
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
@@ -201,6 +227,7 @@ fun PasswordInputNonEmptyMaskedPreview() {
                     isError = false,
                     errorMessage = Int.DEFAULT
                 ),
+                enabled = true,
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},
@@ -231,6 +258,7 @@ fun PasswordInputNonEmptyUnmaskedPreview() {
                     isError = false,
                     errorMessage = Int.DEFAULT
                 ),
+                enabled = true,
                 imeAction = ImeAction.Done,
                 onPasswordChange = {},
                 onPasswordVisibilityButtonClicked = {},

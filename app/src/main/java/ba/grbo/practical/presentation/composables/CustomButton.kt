@@ -14,17 +14,18 @@ import androidx.compose.ui.unit.dp
 fun CustomButton(
     modifier: Modifier = Modifier,
     @StringRes text: Int,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,
+        enabled = enabled,
         shape = CircleShape,
         onClick = onClick
     ) {
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = stringResource(text)
+            text = stringResource(text),
         )
     }
-
 }

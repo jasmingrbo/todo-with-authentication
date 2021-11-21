@@ -10,7 +10,9 @@ ext {
             compose       : "1.1.0-beta03",
             hilt          : "2.38.1",
             navigation    : "2.4.0-beta02",
-            hiltNavigation: "1.0.0-beta01"
+            hiltNavigation: "1.0.0-beta01",
+            firebase      : "4.3.10",
+            firebaseBom   : "29.0.0"
     ]
 
     conf = [
@@ -24,9 +26,10 @@ ext {
     ]
 
     pluginDep = [
-            gradle: "com.android.tools.build:gradle:$version.gradle",
-            kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$version.kotlin",
-            hilt  : "com.google.dagger:hilt-android-gradle-plugin:$version.hilt",
+            gradle  : "com.android.tools.build:gradle:$version.gradle",
+            kotlin  : "org.jetbrains.kotlin:kotlin-gradle-plugin:$version.kotlin",
+            hilt    : "com.google.dagger:hilt-android-gradle-plugin:$version.hilt",
+            firebase: "com.google.gms:google-services:$version.firebase"
     ]
 
     androidLib = [
@@ -47,6 +50,12 @@ ext {
     di = [
             hilt        : "com.google.dagger:hilt-android:$version.hilt",
             hiltCompiler: "com.google.dagger:hilt-android-compiler:$version.hilt"
+    ]
+
+    backend = [
+            firebaseBom: "com.google.firebase:firebase-bom:$version.firebaseBom",
+            firebaseAnalytics: "com.google.firebase:firebase-analytics-ktx",
+            firebaseAuthentication: "com.google.firebase:firebase-auth-ktx"
     ]
 
     routing = [

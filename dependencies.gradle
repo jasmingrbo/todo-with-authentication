@@ -12,7 +12,8 @@ ext {
             navigation    : "2.4.0-beta02",
             hiltNavigation: "1.0.0-beta01",
             firebase      : "4.3.10",
-            firebaseBom   : "29.0.0"
+            firebaseBom   : "29.0.0",
+            room          : "2.3.0"
     ]
 
     conf = [
@@ -53,9 +54,16 @@ ext {
     ]
 
     backend = [
-            firebaseBom: "com.google.firebase:firebase-bom:$version.firebaseBom",
-            firebaseAnalytics: "com.google.firebase:firebase-analytics-ktx",
-            firebaseAuthentication: "com.google.firebase:firebase-auth-ktx"
+            firebaseBom           : "com.google.firebase:firebase-bom:$version.firebaseBom",
+            firebaseAnalytics     : "com.google.firebase:firebase-analytics-ktx",
+            firebaseAuthentication: "com.google.firebase:firebase-auth-ktx",
+            firebaseDatabase      : "com.google.firebase:firebase-database-ktx"
+    ]
+
+    cache = [
+            room        : "androidx.room:room-runtime:$version.room",
+            roomKtx     : "androidx.room:room-ktx:$version.room",
+            roomCompiler: "androidx.room:room-compiler:$version.room"
     ]
 
     routing = [

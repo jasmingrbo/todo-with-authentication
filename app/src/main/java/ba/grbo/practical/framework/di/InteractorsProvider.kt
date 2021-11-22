@@ -1,12 +1,23 @@
 package ba.grbo.practical.framework.di
 
 import ba.grbo.core.data.Authenticator
+import ba.grbo.core.data.TaskRepository
+import ba.grbo.core.interactors.AddTasks
 import ba.grbo.core.interactors.CreateUser
+import ba.grbo.core.interactors.DefaultAddTasks
 import ba.grbo.core.interactors.DefaultCreateUser
+import ba.grbo.core.interactors.DefaultFetchUser
 import ba.grbo.core.interactors.DefaultIsAuthenticated
 import ba.grbo.core.interactors.DefaultLoginUser
+import ba.grbo.core.interactors.DefaultObserveAuthentication
+import ba.grbo.core.interactors.DefaultObserveTasks
+import ba.grbo.core.interactors.DefaultSignOutUser
+import ba.grbo.core.interactors.FetchUser
 import ba.grbo.core.interactors.IsAuthenticated
 import ba.grbo.core.interactors.LoginUser
+import ba.grbo.core.interactors.ObserveAuthentication
+import ba.grbo.core.interactors.ObserveTasks
+import ba.grbo.core.interactors.SignOutUser
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -20,21 +31,51 @@ abstract class InteractorsProvider {
     companion object {
         @ActivityRetainedScoped
         @Provides
-        fun provideLoginUserInteractor(
+        fun provideDefaultLoginUserInteractor(
             authenticator: Authenticator
         ) = DefaultLoginUser(authenticator)
 
         @ActivityRetainedScoped
         @Provides
-        fun provideCreateUserInteractor(
+        fun provideDefaultCreateUserInteractor(
             authenticator: Authenticator
         ) = DefaultCreateUser(authenticator)
 
         @ActivityRetainedScoped
         @Provides
-        fun provideIsAuthenticatedInteractor(
+        fun provideDefaultIsAuthenticatedInteractor(
             authenticator: Authenticator
         ) = DefaultIsAuthenticated(authenticator)
+
+        @ActivityRetainedScoped
+        @Provides
+        fun provideDefaultObserveTasksInteractor(
+            taskRepository: TaskRepository
+        ) = DefaultObserveTasks(taskRepository)
+
+        @ActivityRetainedScoped
+        @Provides
+        fun provideDefaultAddTasksInteractor(
+            taskRepository: TaskRepository
+        ) = DefaultAddTasks(taskRepository)
+
+        @ActivityRetainedScoped
+        @Provides
+        fun provideDefaultFetchUserInteractor(
+            authenticator: Authenticator
+        ) = DefaultFetchUser(authenticator)
+
+        @ActivityRetainedScoped
+        @Provides
+        fun provideDefaultSignOutUserInteractor(
+            authenticator: Authenticator
+        ) = DefaultSignOutUser(authenticator)
+
+        @ActivityRetainedScoped
+        @Provides
+        fun provideDefaultObserveAuthenticationInteractor(
+            authenticator: Authenticator
+        ) = DefaultObserveAuthentication(authenticator)
     }
 
     @ActivityRetainedScoped
@@ -50,4 +91,34 @@ abstract class InteractorsProvider {
     abstract fun bindDefaultIsAuthenticatedInteractor(
         isAuthenticated: DefaultIsAuthenticated
     ): IsAuthenticated
+
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindDefaultObserveTasksInteractor(
+        observeTasks: DefaultObserveTasks
+    ): ObserveTasks
+
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindDefaultAddTasksInteractor(
+        addTasks: DefaultAddTasks
+    ): AddTasks
+
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindDefaultFetchUserInteractor(
+        fetchUser: DefaultFetchUser
+    ): FetchUser
+
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindDefaultSignOutUserInteractor(
+        signOutUser: DefaultSignOutUser
+    ): SignOutUser
+
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindDefaultObserveAuthenticationInteractor(
+        observeAuthentication: DefaultObserveAuthentication
+    ): ObserveAuthentication
 }

@@ -2,6 +2,9 @@
     <string name="app_name">Practical</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
+    <string name="tasks">Tasks</string>
+    <string name="add_button">Add</string>
     <string name="restore_password">Restore password</string>
     <string name="email_input_placeholder">Email</string>
     <string name="password_input_placeholder">Password</string>
@@ -16,6 +19,7 @@
     <string name="sign_up_with_email">Or, sign up with email…</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="restore_email_sent">An email with the instructions has been sent to you.</string>
+    <string name="delete_icon_description">Recycle bin</string>
 
     <string name="email_empty">Email empty</string>
     <string name="email_invalid">Email invalid</string>

@@ -9,10 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PracticalActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             val viewModel = hiltViewModel<PracticalViewModel>()
             PracticalApp(loggedIn = viewModel.loggedIn)

@@ -71,6 +71,11 @@ dependencies {
     implementation platform(backend.firebaseBom)
     implementation backend.firebaseAnalytics
     implementation backend.firebaseAuthentication
+    implementation backend.firebaseDatabase
+
+    implementation cache.room
+    implementation cache.roomKtx
+    kapt cache.roomCompiler
 
     implementation compose.ui
     implementation compose.material

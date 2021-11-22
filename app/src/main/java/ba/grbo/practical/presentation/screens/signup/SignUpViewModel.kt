@@ -10,8 +10,11 @@ import ba.grbo.core.domain.Email
 import ba.grbo.core.domain.Password
 import ba.grbo.core.domain.Result.Loading
 import ba.grbo.core.domain.Result.Success
+import ba.grbo.core.domain.Task
 import ba.grbo.core.domain.Validable.Valid
+import ba.grbo.core.interactors.AddTasks
 import ba.grbo.core.interactors.CreateUser
+import ba.grbo.core.interactors.FetchUser
 import ba.grbo.practical.R
 import ba.grbo.practical.framework.data.state.SignUpEvent
 import ba.grbo.practical.framework.data.state.SignUpEvent.EmailChanged
@@ -40,10 +43,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUp: CreateUser,
+    private val fetchUser: FetchUser,
+    private val addTasks: AddTasks,
     private val IODispatcher: CoroutineDispatcher
 ) : ViewModel() {
     var state by mutableStateOf(SignUpState.DEFAULT)
@@ -131,7 +137,12 @@ class SignUpViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is Loading -> state = state.copy(loading = result.loading)
-                    is Success -> _signedUp.value = Unit
+                    is Success -> {
+                        // Prepopulate new users with 5 random tasks, to show the list right away
+                        val user = fetchUser()
+                        addTasks(getRandomFiveDummyTasks(), user.uid)
+                        _signedUp.value = Unit
+                    }
                 }
             }
             .catch { throwable ->
@@ -145,4 +156,33 @@ class SignUpViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
     }
+
+    private val dummyTasks = listOf(
+        Task("Learn Jetpack Compose"),
+        Task("Clean the house"),
+        Task("Go shopping"),
+        Task("Pay the bills"),
+        Task("Attend a meeting"),
+        Task("Help those in need"),
+        Task("Visit mom"),
+        Task("Call a friend"),
+        Task("Finish the app"),
+        Task("Learn some German"),
+        Task("Practice English"),
+        Task("Watch an animal documentary"),
+        Task("Make the dinner"),
+        Task("Go for a walk")
+    )
+
+    private fun getRandomFiveDummyTasks(): List<Task> {
+        val randomInts = mutableListOf<Int>()
+        for (i in 1..5) {
+            var randomInt = Random.nextInt(0, 14)
+            while (randomInt in randomInts) randomInt = Random.nextInt(0, 14)
+            randomInts.add(randomInt)
+        }
+
+        return randomInts.map { index -> dummyTasks[index] }
+    }
+
 }

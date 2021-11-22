@@ -17,6 +17,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ba.grbo.practical.framework.data.state.HomeEvent
+import ba.grbo.practical.framework.data.state.HomeEvent.AddTaskButtonClicked
+import ba.grbo.practical.framework.data.state.HomeEvent.DeleteTaskButtonClicked
+import ba.grbo.practical.framework.data.state.HomeEvent.SignOutButtonClicked
+import ba.grbo.practical.framework.data.state.HomeEvent.TaskChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.EmailChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.FacebookLoginButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.GoogleLoginButtonClicked
@@ -163,7 +168,18 @@ fun PracticalScreen(
 
                 composable(HOME.route) {
                     val viewModel = hiltViewModel<HomeViewModel>()
-                    HomeScreen()
+                    HomeScreen(
+                        email = viewModel.state.email,
+                        enabled = viewModel.state.enabled,
+                        tasks = viewModel.state.tasks,
+                        task = viewModel.state.task,
+                        onTaskChanged = { task -> viewModel.onEvent(TaskChanged(task)) },
+                        onAddTaskButtonClicked = { viewModel.onEvent(AddTaskButtonClicked) },
+                        onDeleteTaskButtonClicked = { task ->
+                            viewModel.onEvent(DeleteTaskButtonClicked(task))
+                        },
+                        onSignOutButtonClicked = { viewModel.onEvent(SignOutButtonClicked) }
+                    )
                 }
             }
         }
@@ -183,7 +199,7 @@ private fun NavigateToHome(
                 navController.navigate(HOME.route) {
                     popUpTo(LOGIN.route) { inclusive = true }
                 }
-                delay(300)
+                delay(200)
                 keyboardController?.hide()
             }
         }

@@ -21,12 +21,12 @@ class PracticalViewModel @Inject constructor(
     observeAuthentication: ObserveAuthentication,
     IODispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    var loggedIn by mutableStateOf<Boolean?>(null)
+    var authenticated by mutableStateOf<Boolean?>(null)
         private set
 
     init {
         viewModelScope.launch {
-            loggedIn = withContext(IODispatcher) {
+            authenticated = withContext(IODispatcher) {
                 try {
                     isAuthenticated()
                 } catch (e: Exception) {
@@ -34,10 +34,15 @@ class PracticalViewModel @Inject constructor(
                     false
                 }
             }
-        }
 
-        observeAuthentication()
-            .onEach { authenticated -> if (loggedIn != authenticated) loggedIn = authenticated }
-            .launchIn(viewModelScope)
+
+            observeAuthentication()
+                .onEach { authenticated ->
+                    if (this@PracticalViewModel.authenticated != authenticated) {
+                        this@PracticalViewModel.authenticated = authenticated
+                    }
+                }
+                .launchIn(viewModelScope)
+        }
     }
 }

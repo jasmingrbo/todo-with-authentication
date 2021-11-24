@@ -9,4 +9,6 @@ sealed interface LoginEvent {
     object LoginButtonClicked: LoginEvent
     object GoogleLoginButtonClicked: LoginEvent
     object FacebookLoginButtonClicked: LoginEvent
+    object SignUpButtonClicked: LoginEvent
+    object ForgotPasswordTextClicked: LoginEvent
 }

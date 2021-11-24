@@ -1,5 +1,6 @@
 package ba.grbo.practical.presentation.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,32 +11,39 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ba.grbo.practical.framework.data.state.HomeEvent
+import ba.grbo.practical.framework.data.GoogleAuthentication
 import ba.grbo.practical.framework.data.state.HomeEvent.AddTaskButtonClicked
 import ba.grbo.practical.framework.data.state.HomeEvent.DeleteTaskButtonClicked
 import ba.grbo.practical.framework.data.state.HomeEvent.SignOutButtonClicked
 import ba.grbo.practical.framework.data.state.HomeEvent.TaskChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.EmailChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.FacebookLoginButtonClicked
+import ba.grbo.practical.framework.data.state.LoginEvent.ForgotPasswordTextClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.GoogleLoginButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.LoginButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordChanged
 import ba.grbo.practical.framework.data.state.LoginEvent.PasswordVisibilityButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetEmailButtonClicked
 import ba.grbo.practical.framework.data.state.LoginEvent.ResetPasswordButtonClicked
+import ba.grbo.practical.framework.data.state.LoginEvent.SignUpButtonClicked
 import ba.grbo.practical.framework.data.state.RestorePasswordEvent
 import ba.grbo.practical.framework.data.state.Screen.HOME
 import ba.grbo.practical.framework.data.state.Screen.LOGIN
 import ba.grbo.practical.framework.data.state.Screen.RESTORE_PASSWORD
 import ba.grbo.practical.framework.data.state.Screen.SIGN_UP
 import ba.grbo.practical.framework.data.state.SignUpEvent
+import ba.grbo.practical.presentation.PracticalActivity
 import ba.grbo.practical.presentation.screens.home.HomeScreen
 import ba.grbo.practical.presentation.screens.home.HomeViewModel
 import ba.grbo.practical.presentation.screens.login.LoginScreen
@@ -45,22 +53,26 @@ import ba.grbo.practical.presentation.screens.restorepassword.RestorePasswordVie
 import ba.grbo.practical.presentation.screens.signup.SignUpScreen
 import ba.grbo.practical.presentation.screens.signup.SignUpViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PracticalScreen(
     modifier: Modifier = Modifier,
-    loggedIn: Boolean?,
+    authenticated: Boolean?
 ) {
-    Crossfade(targetState = loggedIn) { targetState ->
+    Crossfade(targetState = authenticated) { targetState ->
         if (targetState == null) Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(modifier = Modifier.size(36.dp))
         } else {
+            HideKeyboard(loggedIn = targetState)
+
             val navController = rememberNavController()
+
             NavHost(
                 modifier = modifier,
                 navController = navController,
@@ -69,10 +81,7 @@ fun PracticalScreen(
                 composable(LOGIN.route) {
                     val viewModel = hiltViewModel<LoginViewModel>()
 
-                    NavigateToHome(
-                        flow = viewModel.loggedIn,
-                        navController = navController
-                    )
+                    MonitorAuthWithGoogle(viewModel)
 
                     LoginScreen(
                         email = viewModel.state.email,
@@ -82,7 +91,10 @@ fun PracticalScreen(
                         onEmailChange = { email -> viewModel.onEvent(EmailChanged(email)) },
                         onResetEmailButtonClicked = { viewModel.onEvent(ResetEmailButtonClicked) },
                         onPasswordChange = { pw -> viewModel.onEvent(PasswordChanged(pw)) },
-                        onForgotPasswordTextClicked = { navController.navigate(RESTORE_PASSWORD.route) },
+                        onForgotPasswordTextClicked = {
+                            viewModel.onEvent(ForgotPasswordTextClicked)
+                            navController.navigate(RESTORE_PASSWORD.route)
+                        },
                         onPasswordVisibilityButtonClicked = {
                             viewModel.onEvent(PasswordVisibilityButtonClicked)
                         },
@@ -92,23 +104,27 @@ fun PracticalScreen(
                             )
                         },
                         onLoginButtonClicked = { viewModel.onEvent(LoginButtonClicked) },
-                        onGoogleLoginButtonClicked = { viewModel.onEvent(GoogleLoginButtonClicked) },
+                        onGoogleLoginButtonClicked = {
+                            viewModel.onEvent(
+                                GoogleLoginButtonClicked
+                            )
+                        },
                         onFacebookLoginButtonClicked = {
                             viewModel.onEvent(
                                 FacebookLoginButtonClicked
                             )
                         },
-                        onSignUpTextClicked = { navController.navigate(SIGN_UP.route) }
+                        onSignUpTextClicked = {
+                            viewModel.onEvent(SignUpButtonClicked)
+                            navController.navigate(SIGN_UP.route)
+                        }
                     )
                 }
 
                 composable(SIGN_UP.route) {
                     val viewModel = hiltViewModel<SignUpViewModel>()
 
-                    NavigateToHome(
-                        flow = viewModel.signedUp,
-                        navController = navController
-                    )
+                    MonitorAuthWithGoogle(viewModel)
 
                     SignUpScreen(
                         email = viewModel.state.email,
@@ -116,7 +132,13 @@ fun PracticalScreen(
                         repeatedPassword = viewModel.state.repeatedPassword,
                         loading = viewModel.state.loading,
                         feedback = viewModel.state.feedback,
-                        onEmailChange = { email -> viewModel.onEvent(SignUpEvent.EmailChanged(email)) },
+                        onEmailChange = { email ->
+                            viewModel.onEvent(
+                                SignUpEvent.EmailChanged(
+                                    email
+                                )
+                            )
+                        },
                         onResetEmailButtonClicked = {
                             viewModel.onEvent(SignUpEvent.ResetEmailButtonClicked)
                         },
@@ -150,6 +172,7 @@ fun PracticalScreen(
 
                 composable(RESTORE_PASSWORD.route) {
                     val viewModel = hiltViewModel<RestorePasswordViewModel>()
+
                     RestorePasswordScreen(
                         email = viewModel.state.email,
                         loading = viewModel.state.loading,
@@ -168,6 +191,7 @@ fun PracticalScreen(
 
                 composable(HOME.route) {
                     val viewModel = hiltViewModel<HomeViewModel>()
+
                     HomeScreen(
                         email = viewModel.state.email,
                         enabled = viewModel.state.enabled,
@@ -188,19 +212,51 @@ fun PracticalScreen(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun NavigateToHome(
-    flow: StateFlow<Unit?>,
-    navController: NavHostController,
-) {
+fun HideKeyboard(loggedIn: Boolean) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    LaunchedEffect(key1 = Unit) {
-        flow.collect {
-            it?.run {
-                navController.navigate(HOME.route) {
-                    popUpTo(LOGIN.route) { inclusive = true }
+    LaunchedEffect(key1 = loggedIn) {
+        if (loggedIn) {
+            delay(200)
+            keyboardController?.hide()
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun MonitorAuthWithGoogle(googleAuthentication: GoogleAuthentication) {
+    val context = LocalContext.current
+    (context as PracticalActivity).googleAuthStatus.collect(
+        onValueChanged = { status ->
+            when (status) {
+                is GoogleAuthentication.Status.Succeeded -> {
+                    googleAuthentication.onGoogleAuthSucceeded(status.isNew)
                 }
-                delay(200)
-                keyboardController?.hide()
+                is GoogleAuthentication.Status.Failed -> {
+                    googleAuthentication.onGoogleAuthFailed(status.exception)
+                }
+            }
+        }
+    )
+
+    val focusManager = LocalFocusManager.current
+    LaunchedEffect(key1 = Unit) {
+        googleAuthentication.googleAuthAttempt.collect {
+            focusManager.clearFocus(true)
+            context.fireAuthWithGoogle()
+        }
+    }
+}
+
+
+@SuppressLint("ComposableNaming")
+@Composable
+fun <T : R, R> SharedFlow<T>.collect(onValueChanged: (T) -> Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(key1 = Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            collectLatest {
+                onValueChanged(it)
             }
         }
     }

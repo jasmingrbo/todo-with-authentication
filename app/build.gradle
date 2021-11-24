@@ -72,6 +72,7 @@ dependencies {
     implementation backend.firebaseAnalytics
     implementation backend.firebaseAuthentication
     implementation backend.firebaseDatabase
+    implementation backend.googlePlay
 
     implementation cache.room
     implementation cache.roomKtx

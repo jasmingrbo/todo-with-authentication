@@ -32,9 +32,14 @@
 
     <string name="sign_up_failed_generic">Signing up failed</string>
     <string name="sign_up_failed_email_used">Email already used</string>
+    <string name="auth_failed_network_error">Check your internet connection</string>
     <string name="sign_up_succeeded">Successfully signed up</string>
 
-    <string name="password_restore_not_implemented">Feature not implemented :)</string>
+    <string name="google_authentication_failed_generic">Google authentication failed</string>
+    <string name="google_authentication_failed_cancelled">Authentication cancelled</string>
+    <string name="google_authentication_failed_network">@string/auth_failed_network_error</string>
+
+    <string name="not_implemented">Feature not implemented :)</string>
 
     <string name="incorrect_credentials">Email or password incorrect.</string>
     <string name="successfully_signed_up">Successfully signed up.</string>

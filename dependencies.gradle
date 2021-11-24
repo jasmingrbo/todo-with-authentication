@@ -13,7 +13,8 @@ ext {
             hiltNavigation: "1.0.0-beta01",
             firebase      : "4.3.10",
             firebaseBom   : "29.0.0",
-            room          : "2.3.0"
+            room          : "2.3.0",
+            googlePlay    : "19.2.0"
     ]
 
     conf = [
@@ -57,7 +58,8 @@ ext {
             firebaseBom           : "com.google.firebase:firebase-bom:$version.firebaseBom",
             firebaseAnalytics     : "com.google.firebase:firebase-analytics-ktx",
             firebaseAuthentication: "com.google.firebase:firebase-auth-ktx",
-            firebaseDatabase      : "com.google.firebase:firebase-database-ktx"
+            firebaseDatabase      : "com.google.firebase:firebase-database-ktx",
+            googlePlay            : "com.google.android.gms:play-services-auth:$version.googlePlay"
     ]
 
     cache = [

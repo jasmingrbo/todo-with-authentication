@@ -1,6 +1,5 @@
 package ba.grbo.practical.presentation.screens.signup
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,12 +9,12 @@ import ba.grbo.core.domain.Email
 import ba.grbo.core.domain.Password
 import ba.grbo.core.domain.Result.Loading
 import ba.grbo.core.domain.Result.Success
-import ba.grbo.core.domain.Task
 import ba.grbo.core.domain.Validable.Valid
 import ba.grbo.core.interactors.AddTasks
 import ba.grbo.core.interactors.CreateUser
 import ba.grbo.core.interactors.FetchUser
 import ba.grbo.practical.R
+import ba.grbo.practical.framework.data.GoogleAuthentication
 import ba.grbo.practical.framework.data.state.SignUpEvent
 import ba.grbo.practical.framework.data.state.SignUpEvent.EmailChanged
 import ba.grbo.practical.framework.data.state.SignUpEvent.FacebookSignUpButtonClicked
@@ -30,34 +29,39 @@ import ba.grbo.practical.framework.data.state.SignUpEvent.ResetRepeatedPasswordB
 import ba.grbo.practical.framework.data.state.SignUpEvent.SignUpButtonClicked
 import ba.grbo.practical.framework.data.state.SignUpState
 import ba.grbo.practical.framework.mics.DEFAULT
+import ba.grbo.practical.framework.mics.SingleSharedFlow
 import ba.grbo.practical.framework.mics.validateEmail
 import ba.grbo.practical.framework.mics.validatePassword
 import ba.grbo.practical.framework.mics.validatePasswords
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
+    private val online: StateFlow<Boolean>,
     private val signUp: CreateUser,
     private val fetchUser: FetchUser,
     private val addTasks: AddTasks,
     private val IODispatcher: CoroutineDispatcher
-) : ViewModel() {
+) : ViewModel(), GoogleAuthentication {
     var state by mutableStateOf(SignUpState.DEFAULT)
         private set
 
-    private val _signedUp = MutableStateFlow<Unit?>(null)
-    val signedUp: StateFlow<Unit?>
-        get() = _signedUp
+    override val googleAuthAttempt = SingleSharedFlow<Unit>()
+
+    init {
+        online.launchIn(viewModelScope)
+    }
 
     fun onEvent(event: SignUpEvent): Unit = when (event) {
         is EmailChanged -> state = state.copy(
@@ -103,14 +107,16 @@ class SignUpViewModel @Inject constructor(
                 feedback = Int.DEFAULT
             )
         }
-        is GoogleSignUpButtonClicked -> { /*TODO*/
-        }
-        is FacebookSignUpButtonClicked -> { /*TODO*/
+        is GoogleSignUpButtonClicked -> onGoogleSignUpButtonClicked()
+        is FacebookSignUpButtonClicked -> {
+            state = state.copy(feedback = R.string.not_implemented)
         }
         is SignUpButtonClicked -> onSignUpButtonClicked()
     }
 
     private fun onSignUpButtonClicked() {
+        state = state.copy(feedback = Int.DEFAULT)
+
         val emailValidity = validateEmail(state.email.value)
         val passwordValidity = validatePassword(state.password.value)
         val passwordsValidity = validatePasswords(
@@ -130,59 +136,61 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun signUpUser() {
-        state = state.copy(feedback = Int.DEFAULT)
+        if (!online.value) state = state.copy(feedback = R.string.auth_failed_network_error)
+        else {
+            state = state.copy(feedback = Int.DEFAULT)
 
-        signUp(email = state.email.value, password = state.password.value)
-            .flowOn(IODispatcher)
-            .onEach { result ->
-                when (result) {
-                    is Loading -> state = state.copy(loading = result.loading)
-                    is Success -> {
-                        // Prepopulate new users with 5 random tasks, to show the list right away
-                        val user = fetchUser()
-                        addTasks(getRandomFiveDummyTasks(), user.uid)
-                        _signedUp.value = Unit
+            signUp(email = state.email.value, password = state.password.value)
+                .flowOn(IODispatcher)
+                .onEach { result ->
+                    when (result) {
+                        is Loading -> state = state.copy(loading = result.loading)
+                        is Success -> {
+                            // Prepopulate new users with 5 random tasks, to show the list right away
+                            val user = fetchUser()
+                            addTasks(getRandomFiveDummyTasks(), user.uid)
+                        }
                     }
                 }
-            }
-            .catch { throwable ->
-                // TODO Log the throwable
-                Log.i("jasmin", "$throwable")
-                state = state.copy(
-                    loading = false,
-                    feedback = if (throwable is FirebaseAuthUserCollisionException)
-                        R.string.sign_up_failed_email_used else R.string.sign_up_failed_generic
-                )
-            }
-            .launchIn(viewModelScope)
-    }
-
-    private val dummyTasks = listOf(
-        Task("Learn Jetpack Compose"),
-        Task("Clean the house"),
-        Task("Go shopping"),
-        Task("Pay the bills"),
-        Task("Attend a meeting"),
-        Task("Help those in need"),
-        Task("Visit mom"),
-        Task("Call a friend"),
-        Task("Finish the app"),
-        Task("Learn some German"),
-        Task("Practice English"),
-        Task("Watch an animal documentary"),
-        Task("Make the dinner"),
-        Task("Go for a walk")
-    )
-
-    private fun getRandomFiveDummyTasks(): List<Task> {
-        val randomInts = mutableListOf<Int>()
-        for (i in 1..5) {
-            var randomInt = Random.nextInt(0, 14)
-            while (randomInt in randomInts) randomInt = Random.nextInt(0, 14)
-            randomInts.add(randomInt)
+                .catch { throwable ->
+                    // TODO Log the throwable
+                    state = state.copy(
+                        loading = false,
+                        feedback = when (throwable) {
+                            is FirebaseNetworkException,
+                            is TimeoutCancellationException -> R.string.auth_failed_network_error
+                            is FirebaseAuthUserCollisionException -> R.string.sign_up_failed_email_used
+                            else -> R.string.sign_up_failed_generic
+                        }
+                    )
+                }
+                .launchIn(viewModelScope)
         }
-
-        return randomInts.map { index -> dummyTasks[index] }
     }
 
+    private fun onGoogleSignUpButtonClicked() {
+        if (!online.value) state = state.copy(feedback = R.string.auth_failed_network_error)
+        else {
+            state = state.copy(
+                loading = true,
+                feedback = Int.DEFAULT
+            )
+            googleAuthAttempt.tryEmit(Unit)
+        }
+    }
+
+    override fun onGoogleAuthSucceeded(isNew: Boolean) {
+        val user = fetchUser()
+        if (isNew) viewModelScope.launch(IODispatcher) {
+            addTasks(getRandomFiveDummyTasks(), user.uid)
+        }
+    }
+
+    override fun onGoogleAuthFailed(exception: Exception) {
+        // TODO Log the exception
+        state = state.copy(
+            loading = false,
+            feedback = getFeedback(exception)
+        )
+    }
 }

@@ -32,7 +32,7 @@ class RestorePasswordViewModel @Inject constructor() : ViewModel() {
                     // TODO Make a request to restore the password
                     state.copy(
                         email = state.email.modifyError(
-                            Invalid(R.string.password_restore_not_implemented)
+                            Invalid(R.string.not_implemented)
                         )
                     )
                 } else state.copy(email = state.email.modifyError(emailValidity))

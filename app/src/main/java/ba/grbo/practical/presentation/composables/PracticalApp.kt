@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import ba.grbo.practical.framework.theme.PracticalTheme
 
 @Composable
-fun PracticalApp(loggedIn: Boolean?) {
+fun PracticalApp(authenticated: Boolean?, ) {
     PracticalTheme {
         Surface {
-            PracticalScreen(loggedIn = loggedIn)
+            PracticalScreen(authenticated = authenticated,)
         }
     }
 }

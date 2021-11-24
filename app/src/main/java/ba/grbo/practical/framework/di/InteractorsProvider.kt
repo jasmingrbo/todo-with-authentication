@@ -3,8 +3,10 @@ package ba.grbo.practical.framework.di
 import ba.grbo.core.data.Authenticator
 import ba.grbo.core.data.TaskRepository
 import ba.grbo.core.interactors.AddTasks
+import ba.grbo.core.interactors.AuthenticateWithGoogle
 import ba.grbo.core.interactors.CreateUser
 import ba.grbo.core.interactors.DefaultAddTasks
+import ba.grbo.core.interactors.DefaultAuthenticateWithGoogle
 import ba.grbo.core.interactors.DefaultCreateUser
 import ba.grbo.core.interactors.DefaultFetchUser
 import ba.grbo.core.interactors.DefaultIsAuthenticated
@@ -76,6 +78,12 @@ abstract class InteractorsProvider {
         fun provideDefaultObserveAuthenticationInteractor(
             authenticator: Authenticator
         ) = DefaultObserveAuthentication(authenticator)
+
+        @ActivityRetainedScoped
+        @Provides
+        fun provideDefaultAuthenticateWithGoogleInteractor(
+            authenticator: Authenticator
+        ) = DefaultAuthenticateWithGoogle(authenticator)
     }
 
     @ActivityRetainedScoped
@@ -121,4 +129,10 @@ abstract class InteractorsProvider {
     abstract fun bindDefaultObserveAuthenticationInteractor(
         observeAuthentication: DefaultObserveAuthentication
     ): ObserveAuthentication
+
+    @ActivityRetainedScoped
+    @Binds
+    abstract fun bindDefaultAuthenticateWithGoogleInteractor(
+        googleSignIn: DefaultAuthenticateWithGoogle
+    ): AuthenticateWithGoogle
 }

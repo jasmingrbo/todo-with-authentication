@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,7 @@ import ba.grbo.core.domain.Password
 import ba.grbo.practical.R
 import ba.grbo.practical.framework.mics.DEFAULT
 import ba.grbo.practical.framework.theme.PracticalTheme
+import ba.grbo.practical.presentation.PracticalActivity
 import ba.grbo.practical.presentation.composables.CredentialScreen
 import ba.grbo.practical.presentation.composables.EmailInput
 import ba.grbo.practical.presentation.composables.Header
@@ -49,6 +51,8 @@ fun LoginScreen(
     onFacebookLoginButtonClicked: () -> Unit,
     onSignUpTextClicked: () -> Unit
 ) {
+    // (LocalContext.current as PracticalActivity).fire
+
     CredentialScreen(
         modifier = modifier,
         loading = loading,

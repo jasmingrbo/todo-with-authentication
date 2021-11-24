@@ -14,7 +14,8 @@ ext {
             firebase      : "4.3.10",
             firebaseBom   : "29.0.0",
             room          : "2.3.0",
-            googlePlay    : "19.2.0"
+            googlePlay    : "19.2.0",
+            junit         : "4.13.2"
     ]
 
     conf = [
@@ -71,5 +72,9 @@ ext {
     routing = [
             navigation: "androidx.navigation:navigation-compose:$version.navigation",
             hilt      : "androidx.hilt:hilt-navigation-compose:$version.hiltNavigation",
+    ]
+
+    testing = [
+            junit: "junit:junit:$version.junit"
     ]
 }

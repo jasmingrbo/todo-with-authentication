@@ -83,4 +83,6 @@ dependencies {
     implementation compose.uiToolingPreview
 
     debugImplementation compose.uiTooling
+
+    testImplementation testing.junit
 }

@@ -18,6 +18,10 @@ All sensitive data is included in the project, so that the reviewer can clone th
 build it immediately without having to worry about setting up everything him/herself.
 No harm can be done, since all the sensitive data has been provided through dummy accounts.
 
+Icon credits:
+* Google: *Freepik* at https://www.flaticon.com/
+* Facebook: *Fathema Khanom* at https://www.flaticon.com/
+
 Some app screenshots:
 
 ![1](./screenshots/1.png)

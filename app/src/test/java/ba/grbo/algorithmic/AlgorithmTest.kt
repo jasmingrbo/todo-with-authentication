@@ -1,4 +1,4 @@
-package ba.grbo.algorithm
+package ba.grbo.algorithmic
 
 import org.junit.Assert
 import org.junit.Test

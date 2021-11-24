@@ -1,4 +1,4 @@
-package ba.grbo.algorithm
+package ba.grbo.algorithmic
 
 // Note: Check out the automated tests in AlgorithmTest.kt
 fun getPair(pairs: Array<Pair>): Pair {

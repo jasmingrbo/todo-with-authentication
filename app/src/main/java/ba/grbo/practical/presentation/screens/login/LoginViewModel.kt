@@ -1,6 +1,5 @@
 package ba.grbo.practical.presentation.screens.login
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -58,7 +57,7 @@ class LoginViewModel @Inject constructor(
     override val googleAuthAttempt = SingleSharedFlow<Unit>()
 
     init {
-       online.launchIn(viewModelScope)
+        online.launchIn(viewModelScope)
     }
 
     fun onEvent(event: LoginEvent) {
@@ -95,7 +94,11 @@ class LoginViewModel @Inject constructor(
                 state = state.copy(feedback = Int.DEFAULT)
             }
             ForgotPasswordTextClicked -> {
-                state = state.copy(feedback = Int.DEFAULT)
+                state = state.copy(
+                    email = Email.DEFAULT,
+                    password = Password.DEFAULT,
+                    feedback = Int.DEFAULT
+                )
             }
         }
     }
@@ -114,9 +117,15 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onGoogleLoginButtonClicked() {
-        if (!online.value) state = state.copy(feedback = R.string.auth_failed_network_error)
+        if (!online.value) state = state.copy(
+            email = Email.DEFAULT,
+            password = Password.DEFAULT,
+            feedback = R.string.auth_failed_network_error
+        )
         else {
             state = state.copy(
+                email = Email.DEFAULT,
+                password = Password.DEFAULT,
                 loading = true,
                 feedback = Int.DEFAULT
             )

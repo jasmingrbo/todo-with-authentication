@@ -169,9 +169,15 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onGoogleSignUpButtonClicked() {
-        if (!online.value) state = state.copy(feedback = R.string.auth_failed_network_error)
+        if (!online.value) state = state.copy(
+            email = Email.DEFAULT,
+            password = Password.DEFAULT,
+            feedback = R.string.auth_failed_network_error
+        )
         else {
             state = state.copy(
+                email = Email.DEFAULT,
+                password = Password.DEFAULT,
                 loading = true,
                 feedback = Int.DEFAULT
             )
